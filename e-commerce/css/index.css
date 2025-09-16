@@ -1,0 +1,73 @@
+/*
+
+Esquemas de cores
+
+#F2DBD4
+#F0823E
+#ECF2DB
+#1F0C00
+#3C3C3C
+
+*/
+
+body {
+
+    font-family: 'Poppins', Helvetica, sans-serif;
+    background-color: #ECF2DB;
+
+    color: #1F0C00;
+    font-weight: bold;
+}
+
+.navbar {
+
+    background-color: #F0823E;
+    width: 99%;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    justify-content: center;
+    list-style: none;
+    justify-content: space-between;
+    color: #F2DBD4;
+
+    ul {
+
+        display: flex;
+        list-style: none;
+        text-decoration: none;
+
+
+    }
+
+    li:hover {
+
+        background-color: #c06832;
+        color: #ddc9c3;
+
+
+    }
+
+    li {
+        padding: 2px 5px 2px 5px;
+    }
+
+    a {
+        text-decoration: none;
+        color: #F2DBD4;
+    }
+
+    input {
+        align-items: center;
+        margin-right: 3px;
+        padding: 4px 5px 4px 5px;
+        background-color: #b36f44;
+        border-radius: 25px;
+        border: solid 2px  #F2DBD4;
+        outline: none;
+        box-shadow: none;
+        font: inherit;
+        color: inherit;
+    }
+
+}
