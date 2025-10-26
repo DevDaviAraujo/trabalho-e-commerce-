@@ -7,3 +7,96 @@
     background-color: brown;
     
 }
+
+/* Reset Básico para melhor visualização */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo do corpo da página: Fundo e Centralização */
+body {
+    background-color: #f4f4f4; /* Cor de fundo suave */
+    display: flex; /* Habilita o Flexbox para centralização */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    min-height: 100vh; /* Ocupa a altura total da viewport */
+}
+
+/* Contêiner Principal do Formulário */
+.login-container {
+    background-color: #fff; /* Fundo branco para a caixa de login */
+    padding: 30px;
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    width: 100%;
+    max-width: 350px; /* Largura máxima da caixa de login */
+}
+
+/* Título do Formulário */
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Grupo de Input (Label + Input) */
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block; /* Garante que a label ocupe a largura total */
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+    font-size: 0.9em;
+}
+
+.input-group input[type="text"],
+.input-group input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+/* Botão de Entrar */
+.login-form button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff; /* Cor primária azul */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1em;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s; /* Transição para o efeito hover */
+}
+
+.login-form button[type="submit"]:hover {
+    background-color: #0056b3; /* Cor mais escura ao passar o mouse */
+}
+
+/* Links Adicionais (Esqueci Senha / Criar Conta) */
+.links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.links a {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.9em;
+    margin: 0 10px;
+    transition: color 0.3s;
+}
+
+.links a:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
