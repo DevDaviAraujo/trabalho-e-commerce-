@@ -8,40 +8,36 @@ use Illuminate\Support\Facades\Auth;
 
 class WebsiteController extends Controller
 {
-    public function home() {
-
+    public function adminHome()
+    {
         return view('home');
     }
 
-     public function carrinho() {
+    public function carrinho()
+    {
 
         return view('carrinho');
     }
 
-    public function admin_login() {
+    public function admin_login()
+    {
 
         return view('admin.login');
     }
 
-    public function fazer_login(Request $formulario) {
-    
-        $credenciais = $formulario->validate([
+    public function fazer_login(Request $request)
+{
+    $credenciais = $request->only('email', 'password');
 
-            'email' => ['required','email'],
-            'senha' => ['required'],
-
-        ]);
-
-        if (Auth::attempt($credenciais)) {
-
-            $formulario->session()->regenerate();
-            return redirect()->intended('admin.home');
-
-        }
-
-        dd('dadsasdas');
-
-        return redirect()->back()->withErrors('Usuário inválido!');
-
+    if (Auth::attempt(['email' => $credenciais['email'], 'password' => $credenciais['password']])) {
+        return response()->json(['success' => true, 'redirect' => route('admin_home')]);
     }
+
+    if (Auth::attempt(['name' => $credenciais['email'], 'password' => $credenciais['password']])) {
+        return response()->json(['success' => true, 'redirect' => route('admin_home')]);
+    }
+
+    return response()->json(['success' => false, 'message' => 'Credenciais inválidas.'], 401);
+}
+
 }
