@@ -5,15 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\SubCategoria;
 
-class Categoria extends Model
+use App\Models\Categoria;
+
+class SubCategoria extends Model
 {
     
-    protected $table = 'categorias';
+    protected $table = 'sub_categorias'; 
     protected $fillable = [
 
         'id',
+        'categoria_id',
         'descricao',
         'created_at',
         'updated_at',
@@ -21,7 +23,9 @@ class Categoria extends Model
 
     ];
 
-    public function subCategorias(): HasMany {
-        return $this->hasMany(SubCategoria::class);
+    public function categoria(): BelongsTo {
+        return $this->belongsTo(Categoria::class);
     }
+
+
 }

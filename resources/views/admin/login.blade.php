@@ -4,13 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tela de Login Básica</title>
+    <title>@config('app.name')</title>
     <link rel="stylesheet" href="/css/app.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
 </head>
 
 <body>
     <div class="login-container">
-        <form id="loginForm" class="login-form" action="{{ route('fazer_login') }}" method="POST">
+        <form id="loginForm" class="login-form" action="{{ route('logar') }}" method="POST">
             @csrf
 
             <h2>Login</h2>
@@ -30,59 +33,21 @@
 
             <div class="links">
                 <a href="#">Esqueci minha senha</a>
-                <a href="#">Criar conta</a>
             </div>
+            @error('login')
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Credenciais inválidas!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @enderror
         </form>
 
-        <script>
-            document.getElementById('loginForm').addEventListener('submit', async function (e) {
-                e.preventDefault();
-
-                const form = e.target;
-                const formData = new FormData(form);
-                const messageDiv = document.getElementById('loginMessage');
-                messageDiv.innerHTML = '';
-
-                try {
-                    const response = await fetch(form.action, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': form.querySelector('input[name="_token"]').value,
-                            'Accept': 'application/json',
-                        },
-                        body: formData
-                    });
-
-                    const data = await response.json();
-
-                    if (response.ok && data.success) {
-                        messageDiv.innerHTML = `
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Login realizado com sucesso! Redirecionando...
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>`;
-                        setTimeout(() => window.location.href = data.redirect, 1000);
-                    } else {
-                        messageDiv.innerHTML = `
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    ${data.message || 'Credenciais inválidas.'}
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>`;
-                    }
-                } catch (err) {
-                    console.error(err);
-                    messageDiv.innerHTML = `
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                Erro de conexão. Tente novamente mais tarde.
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>`;
-                }
-            });
-
-        </script>
-
-
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
 </body>
 
 </html>

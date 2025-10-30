@@ -19,9 +19,6 @@
 /* Estilo do corpo da página: Fundo e Centralização */
 body {
     background-color: #f4f4f4; /* Cor de fundo suave */
-    display: flex; /* Habilita o Flexbox para centralização */
-    justify-content: center; /* Centraliza horizontalmente */
-    align-items: center; /* Centraliza verticalmente */
     min-height: 100vh; /* Ocupa a altura total da viewport */
 }
 
@@ -100,3 +97,4 @@ body {
     color: #0056b3;
     text-decoration: underline;
 }
+
