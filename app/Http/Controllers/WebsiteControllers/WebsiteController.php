@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Categoria;
-use App\Models\SubCategoria; 
+use App\Models\SubCategoria;
+use App\Models\Produto;
 use Illuminate\Support\Str;
 
 
@@ -15,26 +16,21 @@ class WebsiteController extends Controller
 
     public function produtos()
     {
-        $produtos = Categoria::orderBy('created_at', 'desc')->paginate(10);
+        $produtos = Produto::orderBy('created_at', 'desc')->paginate(10);
 
         return view('admin.produto.list', compact('produtos'));
     }
 
-
-    public function produtoCadastro($id = false)
+    public function produtoCadastro($id = null)
     {
+        $produto = $id ? Produto::find($id) : null;
 
-        if ($id) {
-            $produto = Categoria::where('id', $id)->first();
-        } else {
-            $produto = null;
-        }
-        return view(
-            'admin.produto.create',
-            ['produto' => $produto]
-        );
-
+        return view('admin.produto.create', [
+            'produto' => $produto,
+            'categorias' => Categoria::all(),
+        ]);
     }
+
 
     public function produtoDeletar($id)
     {
@@ -42,7 +38,7 @@ class WebsiteController extends Controller
         return view(
             'admin.produto.delete',
             [
-                'produto' => Categoria::where('id', $id)->first(),
+                'produto' => Produto::where('id', $id)->first(),
                 'codigo' => Str::Random(5)
             ]
         );
@@ -69,8 +65,10 @@ class WebsiteController extends Controller
         }
         return view(
             'admin.subcategoria.create',
-            ['subcategoria' => $subcategoria,
-            'categorias' => Categoria::all()]
+            [
+                'subcategoria' => $subcategoria,
+                'categorias' => Categoria::all()
+            ]
         );
 
     }

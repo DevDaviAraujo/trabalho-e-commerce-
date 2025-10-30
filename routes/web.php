@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WebsiteControllers\WebsiteController;
 use App\Http\Controllers\WebsiteControllers\CategoriaController;
 use App\Http\Controllers\WebsiteControllers\SubCategoriaController;
+use App\Http\Controllers\WebsiteControllers\ProdutoController;
 
 Route::GET('/', [WebsiteController::class, 'home'])->name("home");
 Route::GET('/carrinho', [WebsiteController::class, 'carrinho'])->name("carrinho");
@@ -47,13 +48,13 @@ Route::middleware(['auth'])->group(function () {
             Route::GET('/deletar/{id}', [WebsiteController::class, 'produtoDeletar'])->name('produto_deletar');
 
 
-            Route::POST('/cadastrar',[CategoriaController::class,'cadastrar'])->name('cadastrar_produto');
-            Route::POST('/deletar',[CategoriaController::class,'deletar'])->name('deletar_produto');
+            Route::POST('/cadastrar',[ProdutoController::class,'cadastrar'])->name('cadastrar_produto');
+            Route::POST('/deletar',[ProdutoController::class,'deletar'])->name('deletar_produto');
         });
 
     });
 });
 
-
+Route::get('/subcategorias/{categoria_id}', [SubCategoriaController::class, 'getByCategoria']);
 
 Route::POST('/logar', [WebsiteController::class, 'logar'])->name('logar');

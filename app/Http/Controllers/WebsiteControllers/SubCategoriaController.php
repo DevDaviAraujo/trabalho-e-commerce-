@@ -19,7 +19,7 @@ class SubCategoriaController extends Controller
                     'required',
                     Rule::unique('sub_categorias', 'descricao')->ignore($request->id),
                 ],
-                
+
                 'categoria_id' => 'required'
             ],
             [
@@ -38,7 +38,7 @@ class SubCategoriaController extends Controller
 
             ]);
 
-            return redirect()->back()->with('success',  'Alteração salva!');
+            return redirect()->back()->with('success', 'Alteração salva!');
 
         } else {
 
@@ -50,7 +50,8 @@ class SubCategoriaController extends Controller
         return redirect()->back()->with('success', $subcategoria->descricao . ' cadastrado com sucesso!');
     }
 
-    public function deletar(Request $request) {
+    public function deletar(Request $request)
+    {
 
         $validated = $request->validate(
             [
@@ -62,10 +63,17 @@ class SubCategoriaController extends Controller
             ]
         );
 
-        SubCategoria::where('id',$request->id)->delete();
+        SubCategoria::where('id', $request->id)->delete();
 
         return redirect()->to(route('subcategorias'));
 
+    }
+
+    public function getByCategoria($categoria_id)
+    {
+        $subcategorias = SubCategoria::where('categoria_id', $categoria_id)->get();
+
+        return response()->json($subcategorias);
     }
 
 
