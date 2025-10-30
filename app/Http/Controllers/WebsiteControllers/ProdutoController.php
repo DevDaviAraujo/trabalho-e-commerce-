@@ -13,6 +13,7 @@ class ProdutoController extends Controller
 
     public function cadastrar(Request $request)
     {
+
         $validated = $request->validate(
             [
                 'sub_categoria_id' => 'required',
@@ -25,6 +26,7 @@ class ProdutoController extends Controller
                 'modelo' => 'required',
                 'codigo' => 'required',
                 'preco' => 'required|numeric|min:0',
+                'estoque' => 'required|numeric|min:0',
             ],
             [
                 'sub_categoria_id.required' => 'A produto é obrigatória.',
@@ -37,6 +39,8 @@ class ProdutoController extends Controller
                 'preco.required' => 'O preço é obrigatório.',
                 'preco.numeric' => 'O preço deve ser numérico.',
                 'preco.min' => 'O preço não pode ser negativo.',
+                'estoque.numeric' => 'O preço deve ser numérico.',
+                'estoque.min' => 'O preço não pode ser negativo.',
             ]
         );
 
@@ -56,7 +60,7 @@ class ProdutoController extends Controller
             return redirect()->back()->with('success', 'Alteração salva!');
         } else {
             $produto = Produto::create($data);
-            return redirect()->back()->with('success', $produto->descricao . ' cadastrado com sucesso!');
+            return redirect()->back()->with('success', $produto->nome. ' cadastrado com sucesso!');
         }
     }
 

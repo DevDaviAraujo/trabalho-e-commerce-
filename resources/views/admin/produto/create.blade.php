@@ -87,10 +87,10 @@
                                 <option value="">Selecione uma categoria primeiro...</option>
                             </select>
                         </div>
-                        <div class="col-12">
+                         <div class="col-12">
                             <label for="descricao" class="form-label">Descrição</label>
-                            <textarea class="form-control rounded-3 @error('descricao') is-invalid @enderror" id="descricao"
-                                name="descricao" rows="4">{{ old('descricao', $produto->descricao ?? '') }}</textarea>
+                            <input id="descricao" type="hidden" name="descricao">
+  <trix-editor class="form-control rounded-3 @error('descricao') is-invalid @enderror" input="descricao"></trix-editor>{{ old('descricao', $produto->descricao ?? '') }}
                         </div>
 
                         <div class="col-md-4">

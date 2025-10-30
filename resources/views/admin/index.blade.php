@@ -14,6 +14,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link rel="stylesheet" href="/css/app.css">
+
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
 </head>
 
 <body class="d-flex flex-column min-vh-100 bg-light">
@@ -24,34 +27,34 @@
                 <a class="navbar-brand fw-bold" href="{{ url('/admin') }}">
                     {{ config('app.name', 'Admin') }}
                 </a>
-                
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                
+
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        
+
                         <li class="nav-item">
                             <a class="nav-link {{ Request::routeIs('produtos*') ? 'active' : '' }}"
-                               href="{{ route('produtos') }}">
+                                href="{{ route('produtos') }}">
                                 <i class="bi bi-box-seam me-1"></i>
                                 Produtos
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a class="nav-link {{ Request::routeIs('categorias*') ? 'active' : '' }}"
-                               href="{{ route('categorias') }}">
+                                href="{{ route('categorias') }}">
                                 <i class="bi bi-tags me-1"></i>
                                 Categorias
                             </a>
                         </li>
-                        
+
                         <li class="nav-item">
                             <a class="nav-link {{ Request::routeIs('subcategorias*') ? 'active' : '' }}"
-                               href="{{ route('subcategorias') }}">
+                                href="{{ route('subcategorias') }}">
                                 <i class="bi bi-diagram-3 me-1"></i>
                                 Subcategorias
                             </a>
