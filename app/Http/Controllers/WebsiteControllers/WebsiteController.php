@@ -21,6 +21,16 @@ class WebsiteController extends Controller
         return view('admin.produto.list', compact('produtos'));
     }
 
+    public function produtoVer($id)
+    {
+        return view(
+            'admin.produto.read',
+            [
+                'produto' => Produto::where('id', $id)->first()
+            ]
+        );
+    }
+
     public function produtoCadastro($id = null)
     {
         $produto = $id ? Produto::find($id) : null;

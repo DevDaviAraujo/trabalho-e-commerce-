@@ -37,14 +37,6 @@
                     <ul class="navbar-nav ms-auto">
 
                         <li class="nav-item">
-                            <a class="nav-link {{ Request::routeIs('produtos*') ? 'active' : '' }}"
-                                href="{{ route('produtos') }}">
-                                <i class="bi bi-box-seam me-1"></i>
-                                Produtos
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
                             <a class="nav-link {{ Request::routeIs('categorias*') ? 'active' : '' }}"
                                 href="{{ route('categorias') }}">
                                 <i class="bi bi-tags me-1"></i>
@@ -60,6 +52,13 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::routeIs('produtos*') ? 'active' : '' }}"
+                                href="{{ route('produtos') }}">
+                                <i class="bi bi-box-seam me-1"></i>
+                                Produtos
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

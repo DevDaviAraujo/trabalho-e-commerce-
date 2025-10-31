@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Content;
+use Illuminate\Support\Str;
 
 class Media extends Model
 {
@@ -28,24 +29,28 @@ class Media extends Model
     public function getDir()
     {
 
-        $file_path = $this->origin_type . '/' .  $this->file;
+        // Normalize folder name based on model type
+        $folder = Str::lower(class_basename($this->origin_type)); // e.g. "produto"
+
+        $file_path = $folder . '/' . $this->file;
 
         if (Storage::disk('public')->exists($file_path)) {
 
-           $file_dir = asset('storage/' . $file_path);
+            $file_dir = asset('storage/' . $file_path);
 
-           return $file_dir; 
+            return $file_dir;
         }
-        
+
         return asset('storage/examples/not_found.avif');
 
     }
 
-    
+
     public function deleteDir()
     {
+        $folder = Str::lower(class_basename($this->origin_type)); // e.g. "produto"
 
-        $file_path = $this->origin_type . '/' .  $this->file;
+        $file_path = $folder . '/' . $this->file;
 
         if (Storage::disk('public')->exists($file_path)) {
 

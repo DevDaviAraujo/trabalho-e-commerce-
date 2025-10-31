@@ -19,101 +19,96 @@ use Illuminate\Support\Str;
 class MediaController extends Controller
 {
 
-    public function save_file(object $file, string $morph_id, string $morph_type, string $pathDir, bool $updating = false)
+    public function save_file(object $file, string $morph_id, string $morph_type, string $pathDir)
     {
-
         $file_path = $file->getRealPath();
-        $file_name = Str::random(2) . time() . '.' . $file->getClientOriginalExtension();
+        $extension = strtolower($file->getClientOriginalExtension());
+        $file_name = Str::random(2) . time() . '.' . $extension;
         $file_type = mime_content_type($file_path);
         $store_path = $pathDir . '/' . $file_name;
-        $file_width = getimagesize($file_path)[0];
-        $file_height = getimagesize($file_path)[1];
+
+        $width = null;
+        $height = null;
+
+        $isImage = str_starts_with($file_type, 'image/');
+        $isVideo = str_starts_with($file_type, 'video/');
+
+        if ($isImage) {
+            [$width, $height] = getimagesize($file_path);
+        }
+
+        if ($isVideo) {
+            try {
+                $ffprobe = \FFMpeg\FFProbe::create();
+                $videoStream = $ffprobe->streams($file_path)->videos()->first();
+                $width = $videoStream->get('width');
+                $height = $videoStream->get('height');
+            } catch (\Exception $e) {
+                $width = null;
+                $height = null;
+            }
+        }
 
 
+        // Save file to storage
         Storage::disk('public')->put($store_path, file_get_contents($file_path));
-
-        $modelMap = $morph_type;
 
         DB::beginTransaction();
 
         try {
-
             if (Storage::disk('public')->exists($store_path)) {
-
-                if ($updating) {
-
-                    $modelClass = $modelMap[$morph_type];
-
-                    $content = $modelClass::where('id', $morph_id)->first();
-
-                    $oldFile = $content->image->deleteDir();
-
-                    $image = $content->image->update([
-                        'file' => $file_name,
-                        'file_type' => $file_type,
-                        'width' => $file_width,
-                        'height' => $file_height,
-                    ]);
-
-                } else {
-
-                    $image = Media::create([
-                        'file' => $file_name,
-                        'file_type' => $file_type,
-                        'width' => $file_width,
-                        'height' => $file_height,
-                        'origin_type' => $morph_type,
-                        'origin_id' => $morph_id,
-                    ]);
-                }
+                Media::create([
+                    'file' => $file_name,
+                    'file_type' => $file_type,
+                    'width' => $width,
+                    'height' => $height,
+                    'origin_type' => $morph_type,
+                    'origin_id' => $morph_id,
+                ]);
             }
 
             DB::commit();
 
             return [
                 'status' => 'success',
-                'message' => 'Upload de imagem com Sucesso!'
+                'message' => 'Upload de arquivo com sucesso!',
+                'type' => $isVideo ? 'video' : 'image'
             ];
-        } catch (\Exception $e) {
 
+        } catch (\Exception $e) {
             DB::rollBack();
 
             return [
                 'status' => 'error',
                 'message' => 'Algo deu errado, tente novamente.',
-                'error' => $e
+                'error' => $e->getMessage(),
             ];
         }
     }
 
-    public function delete(string $mediaId)
-    {
+    public function destroy($id)
+{
+    $media = Media::findOrFail($id);
 
-        DB::beginTransaction();
+    DB::beginTransaction();
 
-        try {
+    try {
+        
+        $media->deleteDir();
 
-            $media = Media::find($mediaId);
+        $media->delete();
 
-            $media->deleteDir();
-            $media->delete();
+        DB::commit();
 
-            DB::commit();
+        return redirect()->back()->with('success', 'Arquivo removido com sucesso.');
+    } catch (\Exception $e) {
+        DB::rollBack();
 
-            return [
-                'status' => 'success',
-                'message' => 'Conteúdo deletado com sucesso!',
-
-            ];
-
-        } catch (\Exception $e) {
-
-            DB::rollBack();
-
-            return [
-                'status' => 'error',
-                'message' => 'Algo deu errado, tente novamente.'
-            ];
-        }
+        return redirect()->back()->with(
+            'error',
+            'Algo deu errado, tente novamente. ' . $e->getMessage()
+        );
     }
+}
+
 }

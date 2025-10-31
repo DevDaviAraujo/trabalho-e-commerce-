@@ -13,13 +13,13 @@
                     <!-- Título -->
                     <h2 class="h5 mb-0 text-dark">
                         <i class="bi bi-box-seam me-2"></i>
-                        Meus Produtos
+                        users Cadastradas
                     </h2>
 
                     <!-- Botão de Adicionar Novo -->
-                    <a href="{{ Route('produto_cadastro') }}" class="btn btn-primary btn-lg rounded-pill px-4">
+                    <a href="{{ Route('user_cadastro') }}" class="btn btn-primary btn-lg rounded-pill px-4">
                         <i class="bi bi-plus-lg me-1"></i>
-                        Adicionar Produto
+                        Adicionar user
                     </a>
                 </div>
             </div>
@@ -37,64 +37,61 @@
                             <tr>
                                 <!-- Baseado nos campos 'id', 'codigo', 'nome', 'preco', 'estoque', 'created_at' -->
                                 <th scope="col" class="px-4 py-3">ID</th>
-                                <th scope="col" class="py-3">Código</th>
-                                <th scope="col" class="py-3">Nome</th>
-                                <th scope="col" class="py-3">Preço</th>
-                                <th scope="col" class="py-3">Estoque</th>
+                                <th scope="col" class="py-3">Descrição</th>
                                 <th scope="col" class="py-3">Data Cadastro</th>
+                                <th scope="col" class="py-3">Última Alteração</th>
                                 <th scope="col" class="text-end px-4 py-3">Ações</th>
                             </tr>
                         </thead>
 
                         <!-- Corpo da Tabela (com dados de exemplo) -->
                         <tbody>
-                            @foreach($produtos as $produto)
+                            @foreach($users as $user)
                                 <tr>
-                                    <td class="px-4 fw-bold">{{ $produto->id }}</td>
-                                    <td>{{ $produto->codigo }}</td>
-                                    <td>{{ $produto->nome }}</td>
-                                    <td>{{ $produto->preco }}</td>
                                     <td>
-                                        <span
-                                            class="badge bg-danger-subtle text-danger-emphasis rounded-pill">{{ $produto->estoque }}</span>
+                                        {{ $user->id }}
                                     </td>
-                                    <td>{{ $produto->created_at }}</td>
-                                    <td class="text-end px-4">
+                                    <td>
+                                        {{ $user->descricao }}
+                                    </td>
+                                    <td>
+                                        {{ $user->created_at->format('d/m/Y H:i') }}
+                                    </td>
+                                    <td>
+                                        {{ $user->updated_at->format('d/m/Y H:i') }}
+                                    </td>
+                                    <td class="px-4">
                                         <div class="d-flex justify-content-end gap-2">
 
-                                            <a href="{{ route('produto_visualizar', ['id' => $produto->id]) }}"
-                                            class="btn btn-info rounded-circle d-inline-flex align-items-center justify-content-center"
-                                                style="width: 38px; height: 38px;" title="Editar">
-                                                <i class="bi bi-eye-fill text-white"></i>
-                                            </a>
-                                            <a href="{{ route('produto_edicao', ['id' => $produto->id]) }}"
+                                            <a href="{{ route('user_edicao', ['id' => $user->id]) }}"
                                                 class="btn btn-warning rounded-circle d-inline-flex align-items-center justify-content-center"
                                                 style="width: 38px; height: 38px;" title="Editar">
                                                 <i class="bi bi-pencil-square text-white"></i>
                                             </a>
 
-                                            <a href="{{ route('produto_deletar', ['id' => $produto->id]) }}"
+                                            <a href="{{ route('user_deletar', ['id' => $user->id]) }}"
                                                 class="btn btn-danger rounded-circle d-inline-flex align-items-center justify-content-center"
                                                 style="width: 38px; height: 38px;" title="Excluir">
                                                 <i class="bi bi-trash text-white"></i>
                                             </a>
+
                                         </div>
                                     </td>
                                 </tr>
                             @endforeach
-
                         </tbody>
                     </table>
                 </div> <!-- fim .table-responsive -->
 
             </div> <!-- fim .card-body -->
 
+
             <div class="card-footer bg-white py-3 px-4 border-0 rounded-bottom-4">
                 <div class="d-flex justify-content-between align-items-center">
                     <span class="text-muted small">
-                        Exibindo {{ $produtos->count() }} de {{ $produtos->total() }} produtos
+                        Exibindo {{ $users->count() }} de {{ $users->total() }} users
                     </span>
-                    {{ $produtos->links('pagination::bootstrap-5') }}
+                    {{ $users->links('pagination::bootstrap-5') }}
                 </div>
             </div>
 

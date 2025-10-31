@@ -5,6 +5,7 @@ use App\Http\Controllers\WebsiteControllers\WebsiteController;
 use App\Http\Controllers\WebsiteControllers\CategoriaController;
 use App\Http\Controllers\WebsiteControllers\SubCategoriaController;
 use App\Http\Controllers\WebsiteControllers\ProdutoController;
+use App\Http\Controllers\WebsiteControllers\MediaController;
 
 Route::GET('/', [WebsiteController::class, 'home'])->name("home");
 Route::GET('/carrinho', [WebsiteController::class, 'carrinho'])->name("carrinho");
@@ -46,11 +47,14 @@ Route::middleware(['auth'])->group(function () {
             Route::GET('/cadastro', [WebsiteController::class, 'produtoCadastro'])->name('produto_cadastro');
             Route::GET('/cadastro/{id}', [WebsiteController::class, 'produtoCadastro'])->name('produto_edicao');
             Route::GET('/deletar/{id}', [WebsiteController::class, 'produtoDeletar'])->name('produto_deletar');
+            Route::GET('/{id}', [WebsiteController::class, 'produtoVer'])->name('produto_visualizar');
 
 
             Route::POST('/cadastrar',[ProdutoController::class,'cadastrar'])->name('cadastrar_produto');
             Route::POST('/deletar',[ProdutoController::class,'deletar'])->name('deletar_produto');
         });
+
+        Route::POST('media/delete/{id}', [MediaController::class, 'destroy'])->name('media.delete');
 
     });
 });
