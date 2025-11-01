@@ -45,10 +45,6 @@
                 <label for="password">Senha</label>
             </div>
 
-            <div class="text-end mb-3">
-                <a href="#" class="text-decoration-none small">Esqueci minha senha</a>
-            </div>
-
             <button class="w-100 btn btn-lg btn-primary rounded-pill" type="submit">
                 Entrar
             </button>

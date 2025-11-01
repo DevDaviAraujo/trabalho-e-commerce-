@@ -8,11 +8,87 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Categoria;
 use App\Models\SubCategoria;
 use App\Models\Produto;
+use App\Models\User;
+use App\Models\Oferta;
 use Illuminate\Support\Str;
 
 
 class WebsiteController extends Controller
 {
+
+    public function ofertas()
+    {
+        $ofertas = Oferta::orderBy('created_at', 'desc')->paginate(10);
+
+        return view('admin.oferta.list', compact('ofertas'));
+    }
+
+    public function ofertaVer($id)
+    {
+        return view(
+            'admin.oferta.read',
+            [
+                'oferta' => Oferta::where('id', $id)->first()
+            ]
+        );
+    }
+
+    public function ofertaCadastro($id = null)
+    {
+        $oferta = $id ? Oferta::find($id) : null;
+
+        return view('admin.oferta.create', [
+            'oferta' => $oferta,
+            'categorias' => Categoria::all(),
+        ]);
+    }
+
+
+    public function ofertaDeletar($id)
+    {
+
+        return view(
+            'admin.oferta.delete',
+            [
+                'oferta' => Oferta::where('id', $id)->first(),
+                'codigo' => Str::Random(5)
+            ]
+        );
+
+
+    }
+
+
+    public function users()
+    {
+        $users = User::orderBy('created_at', 'desc')->paginate(10);
+
+        return view('admin.user.list', compact('users'));
+    }
+
+    public function userCadastro($id = null)
+    {
+        $user = $id ? User::find($id) : null;
+
+        return view('admin.user.create', [
+            'user' => $user,
+        ]);
+    }
+
+
+    public function userDeletar($id)
+    {
+
+        return view(
+            'admin.user.delete',
+            [
+                'user' => User::where('id', $id)->first(),
+                'codigo' => Str::Random(5)
+            ]
+        );
+
+
+    }
 
     public function produtos()
     {
@@ -52,7 +128,6 @@ class WebsiteController extends Controller
                 'codigo' => Str::Random(5)
             ]
         );
-
 
     }
 
@@ -153,26 +228,6 @@ class WebsiteController extends Controller
     {
 
         return view('admin.login');
-    }
-
-    public function logar(Request $request)
-    {
-        $credenciais = $request->only('email', 'password');
-
-
-        if (Auth::attempt(['email' => $credenciais['email'], 'password' => $credenciais['password']])) {
-            return redirect()->route('admin_home');
-        }
-
-
-        if (Auth::attempt(['name' => $credenciais['email'], 'password' => $credenciais['password']])) {
-            return redirect()->route('admin_home');
-        }
-
-
-        return redirect()->back()
-            ->withErrors(['login' => 'Credenciais inválidas!'])
-            ->withInput();
     }
 
 

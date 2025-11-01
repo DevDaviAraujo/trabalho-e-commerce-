@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WebsiteControllers\WebsiteController;
 use App\Http\Controllers\WebsiteControllers\CategoriaController;
+use App\Http\Controllers\WebsiteControllers\UserController;
+use App\Http\Controllers\WebsiteControllers\OfertaController;
 use App\Http\Controllers\WebsiteControllers\SubCategoriaController;
 use App\Http\Controllers\WebsiteControllers\ProdutoController;
 use App\Http\Controllers\WebsiteControllers\MediaController;
@@ -42,7 +44,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
 
-         Route::prefix("/produto")->group(function () {
+        Route::prefix("/produto")->group(function () {
             Route::GET('/', [WebsiteController::class, 'produtos'])->name('produtos');
             Route::GET('/cadastro', [WebsiteController::class, 'produtoCadastro'])->name('produto_cadastro');
             Route::GET('/cadastro/{id}', [WebsiteController::class, 'produtoCadastro'])->name('produto_edicao');
@@ -54,6 +56,29 @@ Route::middleware(['auth'])->group(function () {
             Route::POST('/deletar',[ProdutoController::class,'deletar'])->name('deletar_produto');
         });
 
+        Route::prefix("/user")->group(function () {
+            Route::GET('/', [WebsiteController::class, 'users'])->name('users');
+            Route::GET('/cadastro', [WebsiteController::class, 'userCadastro'])->name('user_cadastro');
+            Route::GET('/cadastro/{id}', [WebsiteController::class, 'userCadastro'])->name('user_edicao');
+            Route::GET('/deletar/{id}', [WebsiteController::class, 'userDeletar'])->name('user_deletar');
+
+
+            Route::POST('/cadastrar',[UserController::class,'cadastrar'])->name('cadastrar_user');
+            Route::POST('/deletar',[UserController::class,'deletar'])->name('deletar_user');
+        });
+
+         Route::prefix("/oferta")->group(function () {
+            Route::GET('/', [WebsiteController::class, 'ofertas'])->name('ofertas');
+            Route::GET('/cadastro', [WebsiteController::class, 'ofertaCadastro'])->name('oferta_cadastro');
+            Route::GET('/cadastro/{id}', [WebsiteController::class, 'ofertaCadastro'])->name('oferta_edicao');
+            Route::GET('/deletar/{id}', [WebsiteController::class, 'ofertaDeletar'])->name('oferta_deletar');
+            Route::GET('/{id}', [WebsiteController::class, 'ofertaVer'])->name('oferta_visualizar');
+
+
+            Route::POST('/cadastrar',[OfertaController::class,'cadastrar'])->name('cadastrar_oferta');
+            Route::POST('/deletar',[OfertaController::class,'deletar'])->name('deletar_oferta');
+        });
+
         Route::POST('media/delete/{id}', [MediaController::class, 'destroy'])->name('media.delete');
 
     });
@@ -61,4 +86,6 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/subcategorias/{categoria_id}', [SubCategoriaController::class, 'getByCategoria']);
 
-Route::POST('/logar', [WebsiteController::class, 'logar'])->name('logar');
+Route::POST('/logar', [UserController::class, 'logar'])->name('logar');
+Route::POST('/deslogar', [UserController::class, 'deslogar'])->name('deslogar');
+

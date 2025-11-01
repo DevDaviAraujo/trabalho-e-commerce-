@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Oferta;
 
 
 class Produto extends Model
@@ -35,6 +36,11 @@ class Produto extends Model
 
     public function medias(): MorphMany {
         return $this->morphMany(Media::class, 'origin');
+    }
+
+    public function ofertas()
+    {
+        return $this->belongsToMany(Oferta::class, 'oferta_produtos', 'produto_id', 'oferta_id');
     }
 
     public function subCategoria(): BelongsTo {

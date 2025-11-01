@@ -13,7 +13,6 @@ class ProdutoController extends Controller
 {
     public function cadastrar(Request $request)
     {
-        // Common rules
         $rules = [
             'sub_categoria_id' => 'required',
             'nome' => [
@@ -28,14 +27,12 @@ class ProdutoController extends Controller
             'estoque' => 'required|numeric|min:0',
         ];
 
-        // Only require images if creating a new product
         if (!$request->id) {
             $rules['imagens'] = 'required|array';
         } else {
             $rules['imagens'] = 'nullable|array';
         }
 
-        // Rules for each uploaded file
         $rules['imagens.*'] = 'file|mimes:jpeg,png,jpg,gif,webp,mp4,mov,avi,webm|max:20000';
 
         $messages = [
@@ -62,7 +59,7 @@ class ProdutoController extends Controller
         DB::beginTransaction();
 
         try {
-            // Create or update
+            
             if ($request->id) {
                 $produto = Produto::findOrFail($request->id);
                 $produto->update($validated);
@@ -72,7 +69,6 @@ class ProdutoController extends Controller
                 $message = $produto->nome . ' cadastrado com sucesso!';
             }
 
-            // Handle file uploads
             if ($request->hasFile('imagens')) {
                 foreach ($request->file('imagens') as $imagem) {
                     app(MediaController::class)->save_file(

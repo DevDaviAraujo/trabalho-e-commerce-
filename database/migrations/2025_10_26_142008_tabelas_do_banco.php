@@ -60,6 +60,28 @@ return new class extends Migration {
         });
 
         /**
+         * ofertas
+         */
+        Schema::create('ofertas', function (Blueprint $table) {
+            $table->id();
+            $table->string('descricao');
+            $table->decimal('valor_desconto', 3, 2);
+            $table->enum('tipo_desconto', ['porcentagem', 'unitário'])->default('porcentagem');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
+        /**
+         * oferta_PRODUTOS (tabela pivô)
+         */
+        Schema::create('oferta_produtos', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('oferta_id')->constrained('ofertas')->onDelete('cascade');
+            $table->foreignId('produto_id')->constrained('produtos')->onDelete('cascade');
+            $table->timestamps();
+        });
+
+        /**
          * CARRINHOS
          */
         Schema::create('carrinhos', function (Blueprint $table) {
