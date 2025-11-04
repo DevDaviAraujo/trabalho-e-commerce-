@@ -11,10 +11,10 @@
 
                     <h2 class="h5 mb-0 text-dark">
                         <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>
-                        Confirmar Exclusão de Subcategoria
+                        Confirmar Exclusão de Oferta
                     </h2>
 
-                    <a href="{{ route('produtos') }}" class="btn btn-outline-secondary rounded-pill px-4">
+                    <a href="{{ route('ofertas') }}" class="btn btn-outline-secondary rounded-pill px-4">
                         <i class="bi bi-arrow-left me-1"></i>
                         Cancelar
                     </a>
@@ -32,46 +32,39 @@
                 <div class="table-responsive rounded-3 border">
                     <table class="table table-striped table-hover mb-0 align-middle">
 
-
+                        <!-- Cabeçalho da Tabela -->
                         <thead class="table-light">
                             <tr>
-
+                                <!-- Baseado nos campos 'id', 'codigo', 'nome', 'preco', 'estoque', 'created_at' -->
                                 <th scope="col" class="px-4 py-3">ID</th>
-                                <th scope="col" class="py-3">Código</th>
-                                <th scope="col" class="py-3">Nome</th>
-                                <th scope="col" class="py-3">Preço</th>
-                                <th scope="col" class="py-3">Estoque</th>
+                                <th scope="col" class="py-3">Descrição</th>
+                                <th scope="col" class="py-3">Desconto</th>
                                 <th scope="col" class="py-3">Data Cadastro</th>
-
+                                <th scope="col" class="py-3">Última Alteração</th>
                             </tr>
                         </thead>
 
-
+                        <!-- Corpo da Tabela (com dados de exemplo) -->
                         <tbody>
-
-                            <tr>
-                                <td class="px-4 fw-bold">{{ $produto->id }}</td>
-                                <td>{{ $produto->codigo }}</td>
-                                <td>T{{ $produto->nome }}</td>
-                                <td>{{ $produto->preco }}</td>
-                                <td>
-                                    <span
-                                        class="badge bg-danger-subtle text-danger-emphasis rounded-pill">{{ $produto->estoque }}</span>
-                                </td>
-                                <td>{{ $produto->created_at }}</td>
-
-                            </tr>
-
+                                <tr>
+                                    <td class="px-4 fw-bold">{{ $oferta->id }}</td>
+                                    <td>{{ $oferta->descricao }}</td>
+                                    <td>{{ $oferta->getDesconto() }}</td>
+                                    <td>{{ $oferta->created_at->format('d/m/Y H:i') }}</td>
+                                    <td>
+                                        {{ $oferta->updated_at->format('d/m/Y H:i') }}
+                                    </td>
+                                </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
             <div class="card-footer bg-white p-4 p-md-5 border-0 rounded-bottom-4">
-                <form method="POST" action="{{ route('deletar_produto') }}">
+                <form method="POST" action="{{ route('deletar_oferta') }}">
                     @csrf
 
                     <input type="hidden" name="codigo" value="{{ $codigo }}">
-                    <input type="hidden" name="id" value="{{ $produto->id }}">
+                    <input type="hidden" name="id" value="{{ $oferta->id }}">
 
                     <div class="row g-3 justify-content-center">
                         <div class="col-auto">

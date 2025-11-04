@@ -39,7 +39,7 @@ class WebsiteController extends Controller
 
         return view('admin.oferta.create', [
             'oferta' => $oferta,
-            'categorias' => Categoria::all(),
+            'produtos' => Produto::all(),
         ]);
     }
 

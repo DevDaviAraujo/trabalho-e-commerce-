@@ -19,7 +19,7 @@ use Illuminate\Support\Str;
 class MediaController extends Controller
 {
 
-    public function save_file(object $file, string $morph_id, string $morph_type, string $pathDir)
+    public function save_file(object $file, string $morph_id, string $morph_type, string $pathDir, bool $updating = false)
     {
         $file_path = $file->getRealPath();
         $extension = strtolower($file->getClientOriginalExtension());
@@ -57,14 +57,30 @@ class MediaController extends Controller
 
         try {
             if (Storage::disk('public')->exists($store_path)) {
-                Media::create([
-                    'file' => $file_name,
-                    'file_type' => $file_type,
-                    'width' => $width,
-                    'height' => $height,
-                    'origin_type' => $morph_type,
-                    'origin_id' => $morph_id,
-                ]);
+
+                if ($updating) {
+
+                    $content = $morph_type::where('id', $morph_id)->first();
+
+                    $oldFile = $content->image->deleteDir();
+
+                    $image = $content->image->update([
+                        'file' => $file_name,
+                        'file_type' => $file_type,
+                        'width' => $width,
+                        'height' => $height,
+                    ]);
+
+                } else {
+                    Media::create([
+                        'file' => $file_name,
+                        'file_type' => $file_type,
+                        'width' => $width,
+                        'height' => $height,
+                        'origin_type' => $morph_type,
+                        'origin_id' => $morph_id,
+                    ]);
+                }
             }
 
             DB::commit();
@@ -87,28 +103,28 @@ class MediaController extends Controller
     }
 
     public function destroy($id)
-{
-    $media = Media::findOrFail($id);
+    {
+        $media = Media::findOrFail($id);
 
-    DB::beginTransaction();
+        DB::beginTransaction();
 
-    try {
-        
-        $media->deleteDir();
+        try {
 
-        $media->delete();
+            $media->deleteDir();
 
-        DB::commit();
+            $media->delete();
 
-        return redirect()->back()->with('success', 'Arquivo removido com sucesso.');
-    } catch (\Exception $e) {
-        DB::rollBack();
+            DB::commit();
 
-        return redirect()->back()->with(
-            'error',
-            'Algo deu errado, tente novamente. ' . $e->getMessage()
-        );
+            return redirect()->back()->with('success', 'Arquivo removido com sucesso.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()->with(
+                'error',
+                'Algo deu errado, tente novamente. ' . $e->getMessage()
+            );
+        }
     }
-}
 
 }

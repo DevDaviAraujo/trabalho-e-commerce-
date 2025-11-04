@@ -13,7 +13,7 @@
                     <!-- Título -->
                     <h2 class="h5 mb-0 text-dark">
                         <i class="bi bi-box-seam me-2"></i>
-                        Meus ofertas
+                        Minhas ofertas
                     </h2>
 
                     <!-- Botão de Adicionar Novo -->
@@ -37,11 +37,10 @@
                             <tr>
                                 <!-- Baseado nos campos 'id', 'codigo', 'nome', 'preco', 'estoque', 'created_at' -->
                                 <th scope="col" class="px-4 py-3">ID</th>
-                                <th scope="col" class="py-3">Código</th>
-                                <th scope="col" class="py-3">Nome</th>
-                                <th scope="col" class="py-3">Preço</th>
-                                <th scope="col" class="py-3">Estoque</th>
+                                <th scope="col" class="py-3">Descrição</th>
+                                <th scope="col" class="py-3">Desconto</th>
                                 <th scope="col" class="py-3">Data Cadastro</th>
+                                <th scope="col" class="py-3">Última Alteração</th>
                                 <th scope="col" class="text-end px-4 py-3">Ações</th>
                             </tr>
                         </thead>
@@ -51,14 +50,12 @@
                             @foreach($ofertas as $oferta)
                                 <tr>
                                     <td class="px-4 fw-bold">{{ $oferta->id }}</td>
-                                    <td>{{ $oferta->codigo }}</td>
-                                    <td>{{ $oferta->nome }}</td>
-                                    <td>{{ $oferta->preco }}</td>
+                                    <td>{{ $oferta->descricao }}</td>
+                                    <td>{{ $oferta->getDesconto() }}</td>
+                                    <td>{{ $oferta->created_at->format('d/m/Y H:i') }}</td>
                                     <td>
-                                        <span
-                                            class="badge bg-danger-subtle text-danger-emphasis rounded-pill">{{ $oferta->estoque }}</span>
+                                        {{ $oferta->updated_at->format('d/m/Y H:i') }}
                                     </td>
-                                    <td>{{ $oferta->created_at }}</td>
                                     <td class="text-end px-4">
                                         <div class="d-flex justify-content-end gap-2">
 

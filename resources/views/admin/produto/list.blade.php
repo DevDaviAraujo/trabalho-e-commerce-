@@ -42,6 +42,7 @@
                                 <th scope="col" class="py-3">Preço</th>
                                 <th scope="col" class="py-3">Estoque</th>
                                 <th scope="col" class="py-3">Data Cadastro</th>
+                                <th scope="col" class="py-3">Última Alteração</th>
                                 <th scope="col" class="text-end px-4 py-3">Ações</th>
                             </tr>
                         </thead>
@@ -53,12 +54,15 @@
                                     <td class="px-4 fw-bold">{{ $produto->id }}</td>
                                     <td>{{ $produto->codigo }}</td>
                                     <td>{{ $produto->nome }}</td>
-                                    <td>{{ $produto->preco }}</td>
+                                    <td>R${{ $produto->preco }}</td>
                                     <td>
                                         <span
                                             class="badge bg-danger-subtle text-danger-emphasis rounded-pill">{{ $produto->estoque }}</span>
                                     </td>
-                                    <td>{{ $produto->created_at }}</td>
+                                     <td>{{ $produto->created_at->format('d/m/Y H:i') }}</td>
+                                    <td>
+                                        {{ $produto->updated_at->format('d/m/Y H:i') }}
+                                    </td>
                                     <td class="text-end px-4">
                                         <div class="d-flex justify-content-end gap-2">
 

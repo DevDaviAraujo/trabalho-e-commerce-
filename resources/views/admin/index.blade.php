@@ -8,6 +8,11 @@
 
     <title>@yield('title', 'Painel') - {{ config('app.name', 'Admin') }}</title>
 
+    @livewireStyles
+
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
@@ -105,6 +110,9 @@
         crossorigin="anonymous"></script>
 
     @stack('scripts')
+
+    @livewireScripts
+
 </body>
 
 </html>
