@@ -5,8 +5,10 @@ namespace App\Http\Controllers\WebsiteControllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\Produto;
 use App\Models\Categoria;
 use App\Models\SubCategoria;
+use Illuminate\Support\Facades\DB;
 
 class CategoriaController extends Controller
 {
@@ -22,26 +24,39 @@ class CategoriaController extends Controller
             ]
         );
 
-        if ($request->id) {
+        DB::beginTransaction();
 
-            $categoria = Categoria::where('id', $request->id)->update([
+        try {
+            if ($request->id) {
 
-                'descricao' => ucfirst(trim($validated['desc']))
+                $categoria = Categoria::where('id', $request->id)->update([
 
-            ]);
+                    'descricao' => ucfirst(trim($validated['desc']))
 
-            return redirect()->back()->with('success',  'Alteração salva!');
+                ]);
 
-        } else {
+                return redirect()->back()->with('success', 'Alteração salva!');
 
-            $categoria = Categoria::create([
-                'descricao' => ucfirst(trim($validated['desc'])),
-            ]);
+            } else {
+
+                $categoria = Categoria::create([
+                    'descricao' => ucfirst(trim($validated['desc'])),
+                ]);
+            }
+
+            DB::commit();
+
+            return redirect()->back()->with('success', $categoria->descricao . ' cadastrado com sucesso!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Algo deu errado: ' . $e->getMessage());
+
         }
-        return redirect()->back()->with('success', $categoria->descricao . ' cadastrado com sucesso!');
     }
 
-    public function deletar(Request $request) {
+    public function deletar(Request $request)
+    {
 
         $validated = $request->validate(
             [
@@ -53,10 +68,32 @@ class CategoriaController extends Controller
             ]
         );
 
-        Categoria::where('id',$request->id)->delete();
+        DB::beginTransaction();
 
-        return redirect()->to(route('categorias'));
+        try {
 
+            $categoria = Categoria::find($request->id);
+            $subcategorias = $categoria->subs;
+
+            foreach ($subcategorias as $subcategoria) {
+
+                Produto::where('sub_categoria_id', $subcategoria->id)->update([
+                    'sub_categoria_id' => 1
+                ]);
+
+            }
+
+            $categoria->delete();
+
+            DB::commit();
+
+            return redirect()->to(route('categorias'));
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Algo deu errado: ' . $e->getMessage());
+
+        }
     }
 
 

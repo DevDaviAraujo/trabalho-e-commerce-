@@ -21,7 +21,7 @@ class Categoria extends Model
 
     ];
 
-    public function subCategorias(): HasMany {
+    public function subs(): HasMany {
         return $this->hasMany(SubCategoria::class);
     }
 }

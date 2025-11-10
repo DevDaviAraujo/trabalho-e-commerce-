@@ -6,6 +6,7 @@ use App\Models\Media;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Oferta;
 
@@ -36,6 +37,10 @@ class Produto extends Model
 
     public function medias(): MorphMany {
         return $this->morphMany(Media::class, 'origin');
+    }
+
+    public function media(): MorphOne {
+        return $this->morphOne(Media::class, 'origin');
     }
 
     public function ofertas()

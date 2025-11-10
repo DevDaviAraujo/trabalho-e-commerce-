@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
+
+use App\Models\Produto;
 use App\Models\Categoria;
 use App\Models\SubCategoria;
+use Illuminate\Support\Facades\DB;
 
 class SubCategoriaController extends Controller
 {
@@ -29,25 +32,33 @@ class SubCategoriaController extends Controller
             ]
         );
 
-        if ($request->id) {
+        try {
 
-            $subcategoria = SubCategoria::where('id', $request->id)->update([
+            if ($request->id) {
 
-                'descricao' => ucfirst(trim($validated['desc'])),
-                'categoria_id' => $validated['categoria_id']
+                $subcategoria = SubCategoria::where('id', $request->id)->update([
 
-            ]);
+                    'descricao' => ucfirst(trim($validated['desc'])),
+                    'categoria_id' => $validated['categoria_id']
 
-            return redirect()->back()->with('success', 'Alteração salva!');
+                ]);
 
-        } else {
+                return redirect()->back()->with('success', 'Alteração salva!');
 
-            $subcategoria = SubCategoria::create([
-                'descricao' => ucfirst(trim($validated['desc'])),
-                'categoria_id' => $validated['categoria_id']
-            ]);
+            } else {
+
+                $subcategoria = SubCategoria::create([
+                    'descricao' => ucfirst(trim($validated['desc'])),
+                    'categoria_id' => $validated['categoria_id']
+                ]);
+            }
+            return redirect()->back()->with('success', $subcategoria->descricao . ' cadastrado com sucesso!');
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Algo deu errado: ' . $e->getMessage());
+
         }
-        return redirect()->back()->with('success', $subcategoria->descricao . ' cadastrado com sucesso!');
     }
 
     public function deletar(Request $request)
@@ -63,9 +74,26 @@ class SubCategoriaController extends Controller
             ]
         );
 
-        SubCategoria::where('id', $request->id)->delete();
+        DB::beginTransaction();
 
-        return redirect()->to(route('subcategorias'));
+        try {
+            $subcategoria = SubCategoria::find($request->id);
+
+            Produto::where('sub_categoria_id', $subcategoria->id)->update([
+                'sub_categoria_id' => 1
+            ]);
+
+            $subcategoria->delete();
+
+            DB::commit();
+
+            return redirect()->to(route('subcategorias'));
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Algo deu errado: ' . $e->getMessage());
+
+        }
 
     }
 

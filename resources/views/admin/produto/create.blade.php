@@ -132,9 +132,9 @@
 
                             <div class="col-12">
                                 <label for="descricao" class="form-label">Descrição</label>
-                                <input id="descricao" type="hidden" name="descricao"
+                                <input id="descricao" type="hidden" name="descricao" style="height: 250px"
                                     value="{{ old('descricao', $produto->descricao ?? '') }}" required>
-                                <trix-editor input="descricao"
+                                <trix-editor input="descricao" style="height: 250px"
                                     class="form-control rounded-3 @error('descricao') is-invalid @enderror">
                                 </trix-editor>
                                 @error('descricao')

@@ -1,0 +1,311 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+/* ======== BASE ======== */
+.bebas-neue-regular {
+  font-family: "Bebas Neue", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  font-family: "Bebas Neue", sans-serif;
+}
+
+/* --- Impede scroll lateral no mobile --- */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100%;
+}
+
+
+/* ======== NAVBAR ======== */
+#logo3 {
+  height: 70px;
+  width: 70px;
+  padding: 5px;
+}
+
+.navegar {
+  background: linear-gradient(90deg, rgba(233, 146, 33, 0.815) 0%, rgba(250, 154, 11, 0.904) 50%, rgb(253, 156, 30) 100%);
+  position: fixed;
+  top: 0;
+  width: 100%;
+  left: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 25px;
+  box-sizing: border-box;
+  z-index: 1000;
+  justify-content: space-between;
+}
+
+/* Centralizar o menu no desktop */
+.nav-esquerda {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.nav-links {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+}
+
+.nav-direita {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+.navegar a {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: black;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.navegar a:hover {
+  color: white;
+}
+
+.link-carrinho {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carrinho2 {
+  width: 32px;
+  height: auto;
+}
+
+.botao {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: black;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.opcoes {
+  background-color: rgba(5, 5, 247, 0.185);
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: black;
+}
+
+/* ======== RESPONSIVIDADE NAVBAR ======== */
+@media (max-width: 900px) {
+  .menu-toggle {
+    display: block;
+  }
+
+  /* Oculta menu no mobile por padrão */
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background: linear-gradient(180deg, rgba(233, 146, 33, 0.95), rgba(250, 154, 11, 0.95));
+    text-align: center;
+    padding: 15px 0;
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  .nav-links.ativo {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease;
+  }
+
+  .nav-links a {
+    padding: 10px 0;
+    width: 100%;
+  }
+
+  .nav-direita {
+    gap: 5px;
+  }
+}
+
+@media (max-width: 480px) {
+  #logo3 {
+    height: 60px;
+    width: 60px;
+  }
+
+  .botao {
+    font-size: 14px;
+  }
+
+  .navegar {
+    padding: 5px 15px;
+  }
+
+  .carrinho2 {
+    width: 28px;
+  }
+}
+
+/* ======== CARROSSEL ======== */
+#default-carousel {
+  margin-top: 86px;
+}
+
+/* ======== TÍTULO ======== */
+#drops {
+  font-size: 70px;
+}
+
+/* ======== PRODUTOS DESKTOP ======== */
+.produtos {
+  display: flex;
+  gap: 90px;
+  justify-content: center;
+}
+
+#produto {
+  width: 500px;
+}
+
+/* ======== RESPONSIVIDADE DOS PRODUTOS ======== */
+
+/* Tablet */
+@media (max-width: 900px) {
+  .produtos {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+  }
+
+  #produto {
+    width: 260px;
+  }
+
+  #drops {
+    font-size: 50px;
+    text-align: center;
+  }
+}
+
+/* Mobile: 2 imagens por linha */
+@media (max-width: 600px) {
+  .produtos {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  #produto {
+    width: auto;
+    max-width: 200px;
+    max-width: 140px;
+  }
+
+  #drops {
+    font-size: 32px;
+  }
+}
+
+/* ======== BOTÃO VER TODOS ======== */
+#ver {
+  padding-top: 50px;
+  font-size: 30px;
+}
+
+/* ======== FOOTER ======== */
+html, body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1;
+}
+
+.footer {
+  background: gray;
+  color: #000000;
+  padding: 20px 0;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  width: 100%;
+  margin-top: auto;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 0 20px;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 200px;
+}
+
+.footer-section h4 {
+  margin-bottom: 8px;
+  font-size: 1.1em;
+  color: #f4b400;
+}
+
+.footer-section p {
+  margin: 4px 0;
+}
+
+.footer-section a {
+  color: #000000;
+  text-decoration: none;
+}
+
+.footer-section a:hover {
+  text-decoration: underline;
+  color: #000000;
+}
+
+/* Responsivo (para celular) */
+@media (max-width: auto) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-section {
+    margin-bottom: 20px;
+  }
+}
+
+.usuario{
+  justify-self: start;
+}

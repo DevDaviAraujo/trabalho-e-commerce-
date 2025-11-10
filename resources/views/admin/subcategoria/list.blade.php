@@ -12,7 +12,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <!-- Título -->
                     <h2 class="h5 mb-0 text-dark">
-                        <i class="bi bi-box-seam me-2"></i>
+                        <i class="bi bi-diagram-3 me-1"></i>
                         Sub-Categorias Cadastradas
                     </h2>
 

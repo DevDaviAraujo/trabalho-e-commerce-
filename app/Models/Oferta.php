@@ -17,7 +17,8 @@ class Oferta extends Model
         return $this->belongsToMany(Produto::class, 'oferta_produtos', 'oferta_id', 'produto_id');
     }
 
-        public function media(): MorphOne {
+    public function media(): MorphOne
+    {
         return $this->morphOne(Media::class, 'origin');
     }
 

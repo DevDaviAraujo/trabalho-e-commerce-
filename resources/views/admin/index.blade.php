@@ -43,7 +43,8 @@
                         <li class="nav-item">
                             <a class="nav-link {{ Request::routeIs('users*') ? 'active' : '' }}"
                                 href="{{ route('users') }}">
-                                <i class="bi bi-people me-1"></i> Usuários
+                                <i class="bi bi-people me-1"></i>
+                                 Usuários
                             </a>
                         </li>
 
@@ -73,7 +74,9 @@
 
                         <li class="nav-item">
                             <a class="nav-link {{ Request::routeIs('ofertas*') ? 'active' : '' }}"
-                                href="{{ route('ofertas') }}"> <i class="bi bi-cash-coin me-1"></i> Ofertas
+                                href="{{ route('ofertas') }}">
+                                <i class="bi bi-cash-coin me-1"></i>
+                                Ofertas
                             </a>
                         </li>
 
