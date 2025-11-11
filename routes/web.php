@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\WebsiteControllers\FeedBackController;
 use App\Http\Controllers\WebsiteControllers\WebsiteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WebsiteControllers\AdminController;
@@ -12,13 +13,14 @@ use App\Http\Controllers\WebsiteControllers\MediaController;
 
 Route::GET('/', [WebsiteController::class, 'home'])->name("home");
 Route::GET('/carrinho', [WebsiteController::class, 'carrinho'])->name("carrinho");
-Route::GET('/admin/login', [AdminController::class, 'admin_login'])->name('login');
+Route::GET('/fale-conosco', [WebsiteController::class, 'faleConosco'])->name("fale-conosco");
+Route::GET('/admin/login', [AdminController::class, 'login'])->name('login');
+route::POST('/cadastrar', [FeedBackController::class, 'cadastrar'])->name('cadastrar-feedback');
 
 Route::middleware(['auth'])->group(function () {
 
     Route::prefix("/admin")->group(function () {
         Route::GET('/', [AdminController::class, 'produtos'])->name('admin_home');
-
 
         Route::prefix("/categoria")->group(function () {
             Route::GET('/', [AdminController::class, 'categorias'])->name('categorias');
@@ -27,8 +29,8 @@ Route::middleware(['auth'])->group(function () {
             Route::GET('/deletar/{id}', [AdminController::class, 'categoriaDeletar'])->name('categoria_deletar');
 
 
-            Route::POST('/cadastrar',[CategoriaController::class,'cadastrar'])->name('cadastrar_categoria');
-            Route::POST('/deletar',[CategoriaController::class,'deletar'])->name('deletar_categoria');
+            Route::POST('/cadastrar', [CategoriaController::class, 'cadastrar'])->name('cadastrar_categoria');
+            Route::POST('/deletar', [CategoriaController::class, 'deletar'])->name('deletar_categoria');
         });
 
         Route::prefix("/subcategoria")->group(function () {
@@ -38,8 +40,8 @@ Route::middleware(['auth'])->group(function () {
             Route::GET('/deletar/{id}', [AdminController::class, 'subcategoriaDeletar'])->name('subcategoria_deletar');
 
 
-            Route::POST('/cadastrar',[SubCategoriaController::class,'cadastrar'])->name('cadastrar_subcategoria');
-            Route::POST('/deletar',[SubCategoriaController::class,'deletar'])->name('deletar_subcategoria');
+            Route::POST('/cadastrar', [SubCategoriaController::class, 'cadastrar'])->name('cadastrar_subcategoria');
+            Route::POST('/deletar', [SubCategoriaController::class, 'deletar'])->name('deletar_subcategoria');
         });
 
 
@@ -51,8 +53,8 @@ Route::middleware(['auth'])->group(function () {
             Route::GET('/{id}', [AdminController::class, 'produtoVer'])->name('produto_visualizar');
 
 
-            Route::POST('/cadastrar',[ProdutoController::class,'cadastrar'])->name('cadastrar_produto');
-            Route::POST('/deletar',[ProdutoController::class,'deletar'])->name('deletar_produto');
+            Route::POST('/cadastrar', [ProdutoController::class, 'cadastrar'])->name('cadastrar_produto');
+            Route::POST('/deletar', [ProdutoController::class, 'deletar'])->name('deletar_produto');
         });
 
         Route::prefix("/user")->group(function () {
@@ -62,11 +64,11 @@ Route::middleware(['auth'])->group(function () {
             Route::GET('/deletar/{id}', [AdminController::class, 'userDeletar'])->name('user_deletar');
 
 
-            Route::POST('/cadastrar',[UserController::class,'cadastrar'])->name('cadastrar_user');
-            Route::POST('/deletar',[UserController::class,'deletar'])->name('deletar_user');
+            Route::POST('/cadastrar', [UserController::class, 'cadastrar'])->name('cadastrar_user');
+            Route::POST('/deletar', [UserController::class, 'deletar'])->name('deletar_user');
         });
 
-         Route::prefix("/oferta")->group(function () {
+        Route::prefix("/oferta")->group(function () {
             Route::GET('/', [AdminController::class, 'ofertas'])->name('ofertas');
             Route::GET('/cadastro', [AdminController::class, 'ofertaCadastro'])->name('oferta_cadastro');
             Route::GET('/cadastro/{id}', [AdminController::class, 'ofertaCadastro'])->name('oferta_edicao');
@@ -74,8 +76,13 @@ Route::middleware(['auth'])->group(function () {
             Route::GET('/{id}', [AdminController::class, 'ofertaVer'])->name('oferta_visualizar');
 
 
-            Route::POST('/cadastrar',[OfertaController::class,'cadastrar'])->name('cadastrar_oferta');
-            Route::POST('/deletar',[OfertaController::class,'deletar'])->name('deletar_oferta');
+            Route::POST('/cadastrar', [OfertaController::class, 'cadastrar'])->name('cadastrar_oferta');
+            Route::POST('/deletar', [OfertaController::class, 'deletar'])->name('deletar_oferta');
+        });
+
+        Route::prefix("/feedback")->group(function () {
+            Route::GET('/', [AdminController::class, 'feedbacks'])->name('feedbacks');
+            Route::POST('/deletar', [FeedBackController::class, 'deletar'])->name('deletar_feedback');
         });
 
         Route::POST('media/delete/{id}', [MediaController::class, 'destroy'])->name('media.delete');

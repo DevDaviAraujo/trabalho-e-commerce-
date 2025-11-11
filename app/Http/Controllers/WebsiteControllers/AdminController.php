@@ -10,11 +10,20 @@ use App\Models\SubCategoria;
 use App\Models\Produto;
 use App\Models\User;
 use App\Models\Oferta;
+use App\Models\FaleConosco;
 use Illuminate\Support\Str;
 
 
 class AdminController extends Controller
 {
+
+    public function feedbacks() {
+
+        $feedbacks = FaleConosco::paginate(10);
+
+        return view('admin.feedback.list',compact('feedbacks'));
+
+    }
 
     public function ofertas()
     {
@@ -209,13 +218,13 @@ class AdminController extends Controller
 
     }
 
-    public function adminHome()
+    public function home()
     {
         return view('admin.home');
     }
 
 
-    public function admin_login()
+    public function login()
     {
 
         return view('admin.login');

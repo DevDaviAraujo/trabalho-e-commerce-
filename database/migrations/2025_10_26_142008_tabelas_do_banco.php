@@ -109,12 +109,12 @@ return new class extends Migration {
          */
         Schema::create('fale_conosco', function (Blueprint $table) {
             $table->id();
-            $table->string('titulo');
-            $table->text('mensagem');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('nome',55);
+            $table->string('email',55);
+            $table->string('assunto',55);
+            $table->string('mensagem',255);
             $table->boolean('respondido')->default(false);
             $table->timestamps();
-            $table->softDeletes();
         });
 
         /**

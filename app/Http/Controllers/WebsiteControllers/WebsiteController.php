@@ -24,7 +24,15 @@ class WebsiteController extends Controller
             'ofertas' => $ofertas,
             'produtos' => $produtos,
         ]);
-    }    public function carrinho()
+    }   
+    
+    public function faleConosco()
+    {
+
+        return view('faleConosco');
+    }
+
+    public function carrinho()
     {
 
         return view('carrinho');

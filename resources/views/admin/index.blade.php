@@ -8,6 +8,8 @@
 
     <title>@yield('title', 'Painel') - {{ config('app.name', 'Admin') }}</title>
 
+    @stack('styles')
+
     @livewireStyles
 
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
@@ -19,8 +21,6 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <link rel="stylesheet" href="/css/app.css">
-
-    @stack('styles')
 </head>
 
 <body class="d-flex flex-column min-vh-100 bg-light">
@@ -77,6 +77,14 @@
                                 href="{{ route('ofertas') }}">
                                 <i class="bi bi-cash-coin me-1"></i>
                                 Ofertas
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link {{ Request::routeIs('feedbacks*') ? 'active' : '' }}"
+                                href="{{ route('feedbacks') }}">
+                               <i class="bi bi-chat-square-quote"></i>
+                                FeedBacks
                             </a>
                         </li>
 

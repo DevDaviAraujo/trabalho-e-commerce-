@@ -12,8 +12,9 @@ class FaleConosco extends Model
     protected $fillable = [
 
         'id',
-        'user_id',
-        'titulo',
+        'nome',
+        'email',
+        'assunto',
         'mensagem',
         'respondido',
         'created_at',
