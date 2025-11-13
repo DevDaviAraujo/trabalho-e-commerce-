@@ -9,19 +9,10 @@
 
         <h2 class="text-2xl font-bold mb-4">Cadastre-se</h2>
 
+        {{-- Blade --}}
         @if ($errors->has('error'))
             <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
                 {{ $errors->first('error') }}
-            </div>
-        @endif
-
-        @if ($errors->any() && !$errors->has('error'))
-            <div class="mb-4 p-4 bg-red-100 text-red-700 rounded">
-                <ul class="list-disc list-inside">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
             </div>
         @endif
 
@@ -58,6 +49,28 @@
                     class="border rounded w-full p-2 @error('email') border-red-500 @enderror"
                     placeholder="exemplo@email.com" required>
                 @error('email')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Senha --}}
+            <div class="form-group mb-3">
+                <label for="password">Senha</label>
+                <input name="password" id="password" type="password" value="{{ old('password') }}"
+                    class="border rounded w-full p-2 @error('password') border-red-500 @enderror"
+                    placeholder="*******" required>
+                @error('password')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Senha --}}
+            <div class="form-group mb-3">
+                <label for="confirme_password">Confirme a senha</label>
+                <input name="confirme_password" id="confirme_password" type="password" value="{{ old('confirme_password') }}"
+                    class="border rounded w-full p-2 @error('confirme_password') border-red-500 @enderror"
+                    placeholder="*******" required>
+                @error('confirme_password')
                     <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                 @enderror
             </div>
@@ -165,38 +178,38 @@
     </div>
 @endsection
 @push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const cepInput = document.getElementById('cep');
-    if (!cepInput) return; // safety check
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const cepInput = document.getElementById('cep');
+            if (!cepInput) return; // safety check
 
-    cepInput.addEventListener('blur', async function () {
-        let cep = this.value.replace(/\D/g, '');
+            cepInput.addEventListener('blur', async function () {
+                let cep = this.value.replace(/\D/g, '');
 
-        if (cep.length !== 8) {
-            alert('Formato de CEP inválido.');
-            return;
-        }
+                if (cep.length !== 8) {
+                    alert('Formato de CEP inválido.');
+                    return;
+                }
 
-        try {
-            const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-            const data = await response.json();
+                try {
+                    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+                    const data = await response.json();
 
-            if (data.erro) {
-                alert('CEP não encontrado.');
-                return;
-            }
+                    if (data.erro) {
+                        alert('CEP não encontrado.');
+                        return;
+                    }
 
-            document.getElementById('rua').value = data.logradouro || '';
-            document.getElementById('bairro').value = data.bairro || '';
-            document.getElementById('cidade').value = data.localidade || '';
-            document.getElementById('uf').value = data.uf || '';
+                    document.getElementById('rua').value = data.logradouro || '';
+                    document.getElementById('bairro').value = data.bairro || '';
+                    document.getElementById('cidade').value = data.localidade || '';
+                    document.getElementById('uf').value = data.uf || '';
 
-        } catch (error) {
-            alert('Erro ao consultar o CEP.');
-            console.error(error);
-        }
-    });
-});
-</script>
+                } catch (error) {
+                    alert('Erro ao consultar o CEP.');
+                    console.error(error);
+                }
+            });
+        });
+    </script>
 @endpush

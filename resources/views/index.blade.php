@@ -59,7 +59,7 @@
                         @auth
                             {{-- Usuário autenticado --}}
                             <li>
-                                <a href="{{ route('perfil') }}" class="block px-4 py-2 hover:bg-gray-100">Perfil</a>
+                                <a href="{{ route('perfil',['id'=>Auth::user()->id]) }}" class="block px-4 py-2 hover:bg-gray-100">Perfil</a>
                             </li>
                             <li>
                                 <form action="{{ route('deslogar') }}" method="POST" class="block">

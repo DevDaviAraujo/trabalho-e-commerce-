@@ -25,7 +25,7 @@ return new class extends Migration
 
         Schema::create('admins', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nome');
             $table->string('documento',14)->unique();
             $table->boolean('admin')->default(false);
             $table->string('email')->unique();

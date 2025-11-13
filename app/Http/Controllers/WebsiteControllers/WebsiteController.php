@@ -15,6 +15,13 @@ use Illuminate\Support\Str;
 
 class WebsiteController extends Controller
 {
+    public function perfil($id) {
+
+        $user = User::find($id);
+
+        return view('perfil',compact('user'));
+
+    }
 
     public function login() {
 

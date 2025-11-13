@@ -104,6 +104,7 @@ Route::get('/subcategorias/{categoria_id}', [SubCategoriaController::class, 'get
 
 // --- ROTAS DE AUTENTICAÇÃO DO USUÁRIO NORMAL ---
 Route::GET('/login', [WebsiteController::class, 'login'])->name('login');
+Route::GET('/perfil/{id}', [WebsiteController::class, 'perfil'])->name("perfil");
 
 Route::POST('/logar', [UserController::class, 'logar'])->name('logar');
 Route::POST('/deslogar', [UserController::class, 'deslogar'])->name('deslogar');
