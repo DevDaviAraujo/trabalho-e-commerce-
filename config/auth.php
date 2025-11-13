@@ -41,9 +41,10 @@ return [
             'provider' => 'users',
         ],
 
+       // NOSSO NOVO GUARD PARA ADMIN
         'admin' => [
-            'driver' => 'session',
-            'provider' => 'users',
+            'driver' => 'session', // Usa sessões, assim como o 'web'
+            'provider' => 'admins', // Aponta para o 'provider' que definiremos abaixo
         ],
     ],
 
@@ -67,8 +68,15 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' =>  App\Models\User::class,
+            'model' => App\Models\User::class,
         ],
+
+        // NOSSO NOVO PROVIDER PARA ADMINS
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class, // Aponta para o seu modelo Admin
+        ],
+
 
         // 'users' => [
         //     'driver' => 'database',
@@ -102,7 +110,17 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+
+        // CONFIGURAÇÃO DE RESET DE SENHA PARA ADMINS
+        'admins' => [
+            'provider' => 'admins',
+            'table' => 'password_reset_tokens', // Pode usar a mesma tabela
+            'expire' => 60,
+            'throttle' => 60,
+        ],
     ],
+
+    
 
     /*
     |--------------------------------------------------------------------------

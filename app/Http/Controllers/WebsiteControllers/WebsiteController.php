@@ -15,6 +15,18 @@ use Illuminate\Support\Str;
 
 class WebsiteController extends Controller
 {
+
+    public function login() {
+
+        return view('login');
+
+    }
+
+    public function cadastro() {
+
+        return view('cadastro');
+
+    }
      public function home()
     {
         $ofertas = Oferta::all();

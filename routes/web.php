@@ -14,10 +14,20 @@ use App\Http\Controllers\WebsiteControllers\MediaController;
 Route::GET('/', [WebsiteController::class, 'home'])->name("home");
 Route::GET('/carrinho', [WebsiteController::class, 'carrinho'])->name("carrinho");
 Route::GET('/fale-conosco', [WebsiteController::class, 'faleConosco'])->name("fale-conosco");
-Route::GET('/admin/login', [AdminController::class, 'login'])->name('login');
-route::POST('/cadastrar', [FeedBackController::class, 'cadastrar'])->name('cadastrar-feedback');
+Route::GET('/cadastro', [WebsiteController::class, 'cadastro'])->name("cadastro");
 
-Route::middleware(['auth'])->group(function () {
+// --- ROTAS DE AUTENTICAÇÃO DO ADMIN ---
+Route::GET('/admin/login', [AdminController::class, 'login'])->name('login_admin');
+Route::POST('/admin/login', [AdminController::class, 'logar'])->name('admin.logar'); // Nova rota POST
+Route::POST('/admin/logout', [AdminController::class, 'deslogar'])->name('admin.deslogar'); // Nova rota POST
+
+
+Route::POST('/cadastrar', [FeedBackController::class, 'cadastrar'])->name('cadastrar-feedback');
+Route::POST('/cadastrar/usuario', [UserController::class, 'cadastrar'])->name('cadastrar_usuario');
+
+// --- GRUPO DE ROTAS PROTEGIDAS DO ADMIN ---
+// Seu middleware 'auth:admin' agora funcionará corretamente
+Route::middleware(['auth:admin'])->group(function () {
 
     Route::prefix("/admin")->group(function () {
         Route::GET('/', [AdminController::class, 'produtos'])->name('admin_home');
@@ -64,8 +74,8 @@ Route::middleware(['auth'])->group(function () {
             Route::GET('/deletar/{id}', [AdminController::class, 'userDeletar'])->name('user_deletar');
 
 
-            Route::POST('/cadastrar', [UserController::class, 'cadastrar'])->name('cadastrar_user');
-            Route::POST('/deletar', [UserController::class, 'deletar'])->name('deletar_user');
+            Route::POST('/cadastrar', [AdminController::class, 'cadastrar'])->name('cadastrar_user');
+            Route::POST('/deletar', [AdminController::class, 'deletar'])->name('deletar_user');
         });
 
         Route::prefix("/oferta")->group(function () {
@@ -92,6 +102,8 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/subcategorias/{categoria_id}', [SubCategoriaController::class, 'getByCategoria']);
 
+// --- ROTAS DE AUTENTICAÇÃO DO USUÁRIO NORMAL ---
+Route::GET('/login', [WebsiteController::class, 'login'])->name('login');
+
 Route::POST('/logar', [UserController::class, 'logar'])->name('logar');
 Route::POST('/deslogar', [UserController::class, 'deslogar'])->name('deslogar');
-

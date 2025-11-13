@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Admin;
 use App\Models\Categoria;
 use App\Models\SubCategoria;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        User::factory()->create([
+        Admin::create([
             'name' => 'admin',
             'email' => 'admin@admin',
             'password' => '$2y$12$uEOypAgXAfb9PGw3JezYyONXj6u.lRYxh.9qKc17tIogB0G.MpWiG',

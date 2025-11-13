@@ -89,7 +89,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <form action="{{ route('deslogar') }}" method="POST">
+                            <form action="{{ route('admin.deslogar') }}" method="POST">
                                 @csrf
                                 <button type="submit" class="nav-link btn btn-link text-danger">
                                     <i class="bi bi-box-arrow-right me-1"></i>

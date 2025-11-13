@@ -11,8 +11,12 @@ use App\Models\Produto;
 use App\Models\User;
 use App\Models\Oferta;
 use App\Models\FaleConosco;
+use App\Models\Admin;
 use Illuminate\Support\Str;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -228,7 +232,136 @@ class AdminController extends Controller
     {
 
         return view('admin.login');
+
     }
+
+    
+    public function cadastrar(Request $request)
+    {
+
+        $validated = $request->validate(
+            [
+                'name' => 'required|string|max:255',
+                'email' => [
+                    'required',
+                    'string',
+                    'email',
+                    'max:255',
+                    Rule::unique('admins')->ignore($request->id),
+                ],
+                'documento' => [
+                    'nullable',
+                    'string',
+                    'max:255',
+                    Rule::unique('admins')->ignore($request->id),
+                ],
+                'password' => $request->id
+                    ? 'nullable|string|min:4|confirmed' // permite não alterar a senha ao editar
+                    : 'required|string|min:4|confirmed',
+            ],
+            [
+                'name.required' => 'O campo nome é obrigatório.',
+                'email.required' => 'O campo e-mail é obrigatório.',
+                'email.email' => 'Por favor, insira um e-mail válido.',
+                'email.unique' => 'Este e-mail já está em uso.',
+                'documento.unique' => 'Este documento já está em uso.',
+                'password.required' => 'O campo senha é obrigatório.',
+                'password.min' => 'A senha deve ter pelo menos 4 caracteres.',
+                'password.confirmed' => 'A confirmação de senha não confere.',
+            ]
+        );
+
+        DB::beginTransaction();
+
+        try {
+
+            if ($request->id) {
+
+                $admin = Admin::where('id', $request->id)->update([
+
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'documento' => $validated['documento'],
+                    'password' => Hash::make($validated['password']),
+
+                ]);
+
+                DB::commit();
+                return redirect()->back()->with('success', 'Alteração salva!');
+                
+            } else {
+
+                $admin = Admin::create([
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'documento' => $validated['documento'],
+                    'password' => $validated['password'],
+
+                ]);
+            }
+
+            DB::commit();
+            return redirect()->back()->with('success', $admin->name . ' cadastrado com sucesso!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Algo deu errado: ' . $e->getMessage());
+        }
+    }
+
+    public function deletar(Request $request)
+    {
+
+        $validated = $request->validate(
+            [
+                'inputCodigo' => 'required|same:codigo',
+            ],
+            [
+                'inputCodigo.required' => 'A descrição é obrigatória.',
+                'inputCodigo.same' => 'Código inválido!',
+            ]
+        );
+
+        DB::beginTransaction();
+
+        try {
+
+            Admin::where('id', $request->id)->delete();
+            DB::commit();
+            return redirect()->to(route('users'));
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Algo deu errado: ' . $e->getMessage());
+        }
+    }
+
+    public function logar(Request $request)
+    {
+        $credenciais = $request->only('email', 'password');
+
+
+        if (Auth::guard('admin')->attempt(['email' => $credenciais['email'], 'password' => $credenciais['password']])) {
+            return redirect()->route('admin_home');
+        }
+
+
+        if (Auth::guard('admin')->attempt(['name' => $credenciais['email'], 'password' => $credenciais['password']])) {
+            return redirect()->route('admin_home');
+        }
+
+
+        return redirect()->back()
+            ->withErrors(['login' => 'Credenciais inválidas!'])
+            ->withInput();
+    }
+    public function deslogar(Request $request)
+    {
+        Auth::guard('admin')->logout(); // Desloga o usuário autenticado
+        $request->session()->invalidate(); // Invalida a sessão atual
+        $request->session()->regenerateToken(); // Gera novo token CSRF
+
+        return redirect()->route('login_admin')->with('success', 'Você saiu da sua conta.');
+    }
+
 
 
 }

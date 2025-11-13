@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale-1.0">
-    <title>EasyWalk</title>
+    <title>{{ config('app.name') }}</title>
     @stack('styles')
     <link rel="stylesheet" href="{{ asset('css/home.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
@@ -12,7 +12,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="flex flex-col min-h-screen bg-gray-50"> {{-- Add: bg-gray-50 para um fundo suave --}}
+<body class="flex flex-col min-h-screen bg-gray-50 px-auto"> {{-- Add: bg-gray-50 para um fundo suave --}}
 
     {{--
     MELHORIA 1:
@@ -30,17 +30,59 @@
                 <img src="{{ asset('storage/asset/logo3.png') }}" id="logo3" alt="EasyWalk Logo" class="h-16 w-16">
             </a>
 
-            <div class="usuario">
-                {{-- MELHORIA 3: Usando 'route()' para links --}}
-                <a href="{{ route('login') }}"> {{-- Assumindo 'login' ou 'perfil' --}}
+            <div class="usuario relative">
+
+                {{-- Botão do usuário (com ou sem login) --}}
+                <button id="user-options" data-dropdown-toggle="dropdown-user"
+                    class="flex items-center gap-2 text-black hover:text-gray-600 transition-colors md:w-auto focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md p-1"
+                    aria-expanded="false">
+
+                    {{-- Ícone de usuário --}}
                     <svg class="w-10 h-10 text-black hover:text-gray-600 transition-colors cursor-pointer"
-                        aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
                             d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
                             clip-rule="evenodd" />
                     </svg>
-                </a>
+
+                    {{-- Nome do usuário (quando logado) --}}
+                    @auth
+                        <span class="font-medium">{{ Auth::user()->nome }}</span>
+                    @endauth
+                </button>
+
+                {{-- Dropdown --}}
+                <div id="dropdown-user"
+                    class="absolute right-0 top-full mt-2 z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
+                    <ul class="py-2 text-sm text-gray-700" aria-labelledby="user-options">
+
+                        @auth
+                            {{-- Usuário autenticado --}}
+                            <li>
+                                <a href="{{ route('perfil') }}" class="block px-4 py-2 hover:bg-gray-100">Perfil</a>
+                            </li>
+                            <li>
+                                <form action="{{ route('deslogar') }}" method="POST" class="block">
+                                    @csrf
+                                    <button type="submit"
+                                        class="w-full text-left px-4 py-2 hover:bg-gray-100">Deslogar</button>
+                                </form>
+                            </li>
+                        @else
+                            {{-- Visitante --}}
+                            <li>
+                                <a href="{{ route('login') }}" class="block px-4 py-2 hover:bg-gray-100">Entrar</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('cadastro') }}" class="block px-4 py-2 hover:bg-gray-100">Cadastrar</a>
+                            </li>
+                        @endauth
+
+                    </ul>
+                </div>
+
             </div>
+
         </div>
 
         {{--
@@ -149,7 +191,10 @@
     O Flowbite agora cuida de mostrar/esconder o menu mobile
     e o dropdown de categoria.
     --}}
-
+    @stack('scripts')
 </body>
+
+
+
 
 </html>

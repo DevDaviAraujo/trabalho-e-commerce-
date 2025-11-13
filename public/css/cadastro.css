@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+/* ======== RESET ======== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Bebas Neue", sans-serif;
+}
+
+/* ======== BODY ======== */
+body {
+  background: linear-gradient(90deg, rgba(233, 146, 33, 0.815) 0%, rgba(250, 154, 11, 0.904) 50%, rgb(253, 156, 30) 100%);
+  
+  min-height: 100vh; /* Corrige o corte no topo */
+  padding: 20px; /* Garante espaço em telas pequenas */
+  color: #333;
+}
+
+/* ======== CONTAINER ======== */
+.form-container {
+  background-color: gray;
+  padding: 40px 50px;
+  border-radius: 15px;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 420px;
+  transition: all 0.3s ease;
+}
+
+.form-container:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+.form-container h2 {
+  text-align: center;
+  color: rgb(253, 156, 30);
+  margin-bottom: 25px;
+  font-size: 2.3rem;
+  letter-spacing: 1px;
+}
+
+/* ======== CAMPOS ======== */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #000;
+  font-size: 1.2rem;
+  letter-spacing: 0.5px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid rgba(233, 146, 33, 0.7);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #333;
+  background-color: #fdfdfd;
+  transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: rgb(253, 156, 30);
+  box-shadow: 0 0 8px rgba(253, 156, 30, 0.5);
+  outline: none;
+}
+
+/* ======== BOTÃO ======== */
+.button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(233, 146, 33, 0.9), rgba(250, 154, 11, 0.95));
+  color: #000;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background: linear-gradient(90deg, rgba(253, 180, 60, 1), rgba(253, 156, 30, 1));
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(253, 156, 30, 0.5);
+}
+
+/* ======== RESPONSIVIDADE ======== */
+
+/* Telas até 1024px (tablets e laptops pequenos) */
+@media (max-width: 1024px) {
+  body {
+    padding: 30px;
+  }
+
+  .form-container {
+    max-width: 480px;
+    padding: 35px 40px;
+  }
+
+  .form-container h2 {
+    font-size: 2rem;
+  }
+}
+
+/* Telas até 768px (tablets em modo retrato) */
+@media (max-width: 768px) {
+  .form-container {
+    max-width: 90%;
+    padding: 30px;
+  }
+
+  .form-container h2 {
+    font-size: 1.9rem;
+  }
+
+  .form-group label {
+    font-size: 1.1rem;
+  }
+
+  button {
+    font-size: 1.15rem;
+  }
+}
+
+/* Telas até 500px (celulares médios) */
+@media (max-width: 500px) {
+  body {
+    padding: 15px;
+  }
+
+  .form-container {
+    width: 100%;
+    padding: 25px;
+  }
+
+  .form-container h2 {
+    font-size: 1.7rem;
+  }
+
+  .form-group label {
+    font-size: 1rem;
+  }
+
+  button {
+    font-size: 1rem;
+  }
+}
+
+/* Telas muito pequenas (menos de 360px) */
+@media (max-width: 360px) {
+  .form-container {
+    padding: 20px;
+  }
+
+  .form-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 0.9rem;
+  }
+
+  button {
+    font-size: 0.95rem;
+  }
+}

@@ -463,6 +463,15 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
+        'laravellegends/pt-br-validator' => array(
+            'pretty_version' => '12.2.0',
+            'version' => '12.2.0.0',
+            'reference' => '9c04c518a99047edb1da4cbf82dabb124da6bc94',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../laravellegends/pt-br-validator',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
         'league/commonmark' => array(
             'pretty_version' => '2.7.1',
             'version' => '2.7.1.0',

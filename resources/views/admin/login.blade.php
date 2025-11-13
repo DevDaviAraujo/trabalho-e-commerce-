@@ -21,7 +21,7 @@
 
     <main class="w-100 p-4 p-md-5 border rounded-4 bg-body shadow-sm" style="max-width: 420px;">
 
-        <form id="loginForm" action="{{ route('logar') }}" method="POST">
+        <form id="loginForm" action="{{ route('admin.logar') }}" method="POST">
             @csrf
 
             <h2 class="h3 mb-4 fw-normal text-center">Login</h2>
