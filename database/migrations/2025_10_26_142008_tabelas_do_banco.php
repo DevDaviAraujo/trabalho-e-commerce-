@@ -49,7 +49,6 @@ return new class extends Migration {
             $table->id();
             $table->string('nome');
             $table->text('descricao')->nullable();
-            $table->string('tamanho')->nullable();
             $table->string('modelo')->nullable();
             $table->string('codigo')->unique();
             $table->decimal('preco', 10, 2);
@@ -58,6 +57,18 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
         });
+
+        
+        /**
+         * TAMANHOS
+         */
+        Schema::create('tamanhos', function (Blueprint $table) {
+            $table->id();
+            $table->string('tamanho');
+            $table->foreignId('produto_id')->constrained('produtos')->onDelete('cascade');
+            $table->timestamps();
+        });
+
 
         /**
          * ofertas

@@ -10,6 +10,14 @@
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     {{-- Tailwind (se ainda não estiver no seu app.css) --}}
     <script src="https://cdn.tailwindcss.com"></script>
+    @php
+    use App\Models\Categoria;
+
+    $categorias = Categoria::where('id','!=',1)->get();
+
+    @endphp
+
+
 </head>
 
 <body class="flex flex-col min-h-screen bg-gray-50 px-auto"> {{-- Add: bg-gray-50 para um fundo suave --}}
@@ -59,7 +67,8 @@
                         @auth
                             {{-- Usuário autenticado --}}
                             <li>
-                                <a href="{{ route('perfil',['id'=>Auth::user()->id]) }}" class="block px-4 py-2 hover:bg-gray-100">Perfil</a>
+                                <a href="{{ route('perfil', ['id' => Auth::user()->id]) }}"
+                                    class="block px-4 py-2 hover:bg-gray-100">Perfil</a>
                             </li>
                             <li>
                                 <form action="{{ route('deslogar') }}" method="POST" class="block">
@@ -106,20 +115,36 @@
                     <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         d="M1 1l4 4 4-4" />
                 </svg>
-            </button>
+                </button>
 
-            <div id="dropdownMenu" class="z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44">
-                <ul class="py-2 text-sm text-gray-700" aria-labelledby="dropdownButton">
-                    <li>
-                        {{-- Idealmente, isso seria um loop @foreach $categorias --}}
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">Subcategoria 1</a>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">Subcategoria 2</a>
-                    </li>
-                </ul>
-            </div>
+                <div id="dropdownMenu" class="z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56">
 
-            <a href="{{ url('sobre_nos') }}" class="text-black hover:text-gray-600">Sobre Nós</a>
-            <a href="{{ route('fale-conosco') }}" class="text-black hover:text-gray-600">Fale Conosco</a>
+                    <ul class="py-2 text-sm text-gray-700">
+
+                        @foreach ($categorias as $categoria)
+                            <li class="border-b border-gray-200 pb-1">
+
+                                <span class="block px-4 py-2 font-semibold text-black">
+                                    {{ $categoria->descricao }}
+                                </span>
+
+                                {{-- SUBCATEGORIAS --}}
+                                @foreach ($categoria->subs as $sub)
+                                    <a href="{{ route('subcategoria', ['descricao' => $sub->descricao]) }}"
+                                        class="block px-6 py-1 text-gray-600 hover:bg-gray-100">
+                                        {{ $sub->descricao }}
+                                    </a>
+                                @endforeach
+
+                            </li>
+                        @endforeach
+
+                    </ul>
+                </div>
+
+
+                <a href="{{ url('sobre_nos') }}" class="text-black hover:text-gray-600">Sobre Nós</a>
+                <a href="{{ route('fale-conosco') }}" class="text-black hover:text-gray-600">Fale Conosco</a>
         </div>
 
 

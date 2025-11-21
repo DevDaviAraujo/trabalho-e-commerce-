@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
     {
 
         Admin::create([
-            'name' => 'admin',
+            'nome' => 'admin',
             'email' => 'admin@admin',
             'password' => '$2y$12$uEOypAgXAfb9PGw3JezYyONXj6u.lRYxh.9qKc17tIogB0G.MpWiG',
             'documento' => '12345678911'

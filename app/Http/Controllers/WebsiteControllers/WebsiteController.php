@@ -15,26 +15,45 @@ use Illuminate\Support\Str;
 
 class WebsiteController extends Controller
 {
-    public function perfil($id) {
+    public function subcategoria($descricao)
+    {
+        // tenta achar a subcategoria
+        $sub = SubCategoria::where('descricao', $descricao)->first();
+
+        if (!$sub) {
+            abort(404);
+        }
+
+        // pega os produtos relacionados (paginação opcional)
+        $produtos = $sub->produtos()->paginate(12); // 12 por página, ajustar conforme precisar
+
+        return view('subcategoria', compact('sub', 'produtos'));
+    }
+
+
+    public function perfil($id)
+    {
 
         $user = User::find($id);
 
-        return view('perfil',compact('user'));
+        return view('perfil', compact('user'));
 
     }
 
-    public function login() {
+    public function login()
+    {
 
         return view('login');
 
     }
 
-    public function cadastro() {
+    public function cadastro()
+    {
 
         return view('cadastro');
 
     }
-     public function home()
+    public function home()
     {
         $ofertas = Oferta::all();
         $produtos = Produto::all();
@@ -43,8 +62,8 @@ class WebsiteController extends Controller
             'ofertas' => $ofertas,
             'produtos' => $produtos,
         ]);
-    }   
-    
+    }
+
     public function faleConosco()
     {
 

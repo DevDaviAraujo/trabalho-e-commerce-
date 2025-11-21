@@ -35,6 +35,11 @@ class Produto extends Model
         return $this->hasMany(CarrinhoProdutos::class);
     }
 
+    public function tamanhos()
+    {
+        return $this->hasMany(Produto::class, 'tamanhos', 'produto_id');
+    }
+
     public function medias(): MorphMany {
         return $this->morphMany(Media::class, 'origin');
     }

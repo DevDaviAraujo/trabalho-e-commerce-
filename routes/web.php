@@ -20,6 +20,7 @@ Route::GET('/cadastro', [WebsiteController::class, 'cadastro'])->name("cadastro"
 Route::GET('/admin/login', [AdminController::class, 'login'])->name('login_admin');
 Route::POST('/admin/login', [AdminController::class, 'logar'])->name('admin.logar'); // Nova rota POST
 Route::POST('/admin/logout', [AdminController::class, 'deslogar'])->name('admin.deslogar'); // Nova rota POST
+Route::GET('/subcategoria/{descricao}', [WebsiteController::class, 'subcategoria'])->name('subcategoria');
 
 
 Route::POST('/cadastrar', [FeedBackController::class, 'cadastrar'])->name('cadastrar-feedback');
