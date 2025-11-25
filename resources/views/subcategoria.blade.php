@@ -2,6 +2,7 @@
 
 @section('conteudo')
 
+<div class="my-4">
     <h2 class="text-2xl font-bold text-gray-900 mb-6">Produtos em {{ $sub->descricao }}</h2>
 
     {{-- GRUPO DE CARDS COM RESPONSIVIDADE E ESPAÇAMENTO --}}
@@ -13,7 +14,7 @@
                 class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100 flex flex-col">
 
                 {{-- Imagem responsiva e proporcional --}}
-                <a href="{{ route('produto.show', $produto->slug) }}" class="block">
+                <a href="" class="block">
                     <div class="relative aspect-[4/5] w-full overflow-hidden bg-gray-50 rounded-t-xl">
                         <img src="{{ $produto->media->getDir()}}" alt="{{ $produto->nome }}"
                             class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-500 hover:scale-110">
@@ -36,13 +37,13 @@
                     {{-- Preço e Pagamento --}}
                     <div class="mt-2">
                         @php
-                            $preco_parcelado = $produto->preco / 12;
+                            $preco_parcelado = $produto->preco() / 12;
                         @endphp
                         <span class="text-green-600 font-extrabold text-lg block">
                             R$ {{ number_format($preco_parcelado, 2, ',', '.') }} x12
                         </span>
                         <span class="text-gray-600 text-sm block">
-                            ou **R$ {{ number_format($produto->preco, 2, ',', '.') }}** à vista
+                            ou **R$ {{ number_format($produto->preco(), 2, ',', '.') }}** à vista
                         </span>
                     </div>
 
@@ -67,5 +68,6 @@
             {{ $produtos->links() }}
         </div>
     @endif
+    </div>
 
 @endsection

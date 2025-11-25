@@ -70,7 +70,7 @@
                 <hr class="my-4"> @endif
 
 
-                @livewire('produto-formulario')
+                @livewire('produto-formulario',['produto' => $produto ?? null])
             </div>
         </div>
     </div>

@@ -23,8 +23,8 @@
                 <label for="imagens" class="form-label">
                     @isset($produto) Adicionar novas mídias @else Mídias do Produto @endisset
                 </label>
-                <input type="file" class="form-control rounded-3 @error('imagens') is-invalid @enderror" id="imagens"
-                    wire:model="imagens" multiple {{ !isset($produto) ? 'required' : '' }}>
+                <input type="file" multiple accept=".jpg,.jpeg,.png,.webp,.avif" class="form-control rounded-3 @error('imagens') is-invalid @enderror" id="imagens"
+                    wire:model="imagens" multiple {{ !isset($produtoId) ? 'required' : '' }}>
                 @error('imagens')
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
@@ -65,9 +65,10 @@
                 <label class="form-label">Descrição</label>
 
                 <div wire:ignore>
-                    <input id="descricao-trix" type="hidden" wire:model="descricao">
+                    <input id="descricao-trix" type="hidden" wire:model.live="descricao" value="{!! $descricao !!}">
                     <trix-editor input="descricao-trix"></trix-editor>
                 </div>
+
 
                 @error('descricao')
                     <div class="text-danger">{{ $message }}</div>

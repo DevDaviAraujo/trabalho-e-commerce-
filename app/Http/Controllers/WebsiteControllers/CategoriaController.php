@@ -4,6 +4,7 @@ namespace App\Http\Controllers\WebsiteControllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 use App\Models\Produto;
 use App\Models\Categoria;
@@ -16,7 +17,10 @@ class CategoriaController extends Controller
     {
         $validated = $request->validate(
             [
-                'desc' => 'required|unique:categorias,descricao',
+                'desc' => [
+                    'required',
+                    Rule::unique('categorias', 'descricao')->ignore($request->id)
+                ],
             ],
             [
                 'desc.required' => 'A descrição é obrigatória.',
@@ -35,13 +39,12 @@ class CategoriaController extends Controller
 
                 ]);
 
-                return redirect()->back()->with('success', 'Alteração salva!');
-
             } else {
 
                 $categoria = Categoria::create([
                     'descricao' => ucfirst(trim($validated['desc'])),
                 ]);
+
             }
 
             DB::commit();

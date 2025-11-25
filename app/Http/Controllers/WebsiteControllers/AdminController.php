@@ -21,11 +21,12 @@ use Illuminate\Support\Facades\Hash;
 class AdminController extends Controller
 {
 
-    public function feedbacks() {
+    public function feedbacks()
+    {
 
         $feedbacks = FaleConosco::paginate(10);
 
-        return view('admin.feedback.list',compact('feedbacks'));
+        return view('admin.feedback.list', compact('feedbacks'));
 
     }
 
@@ -102,13 +103,112 @@ class AdminController extends Controller
 
 
     }
-
-    public function produtos()
+    public function produtos(Request $request)
     {
-        $produtos = Produto::orderBy('created_at', 'desc')->paginate(10);
+        $produtos = Produto::query()->with(['subCategoria.categoria']);
 
-        return view('admin.produto.list', compact('produtos'));
+        /*
+        |--------------------------------------------------------------------------
+        | Filtro por pesquisa (nome, descricao, modelo, código)
+        |--------------------------------------------------------------------------
+        */
+        if ($request->filled('pesquisa')) {
+            $pesquisa = $request->pesquisa;
+
+            $produtos->where(function ($q) use ($pesquisa) {
+                $q->where('nome', 'like', "%{$pesquisa}%")
+                    ->orWhere('descricao', 'like', "%{$pesquisa}%")
+                    ->orWhere('modelo', 'like', "%{$pesquisa}%")
+                    ->orWhere('codigo', 'like', "%{$pesquisa}%");
+            });
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Filtro por Categoria (categoria_id)
+        |--------------------------------------------------------------------------
+        */
+        if ($request->filled('categoria_id')) {
+            $produtos->whereHas('subCategoria', function ($q) use ($request) {
+                $q->where('categoria_id', $request->categoria_id);
+            });
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Filtro por SubCategoria
+        |--------------------------------------------------------------------------
+        */
+        if ($request->filled('sub_categoria_id')) {
+            $produtos->where('sub_categoria_id', $request->sub_categoria_id);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Filtro por Preço Mínimo / Máximo
+        |--------------------------------------------------------------------------
+        */
+        if ($request->filled('preco_min')) {
+            $produtos->where('preco', '>=', $request->preco_min);
+        }
+
+        if ($request->filled('preco_max')) {
+            $produtos->where('preco', '<=', $request->preco_max);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Filtro por Estoque
+        |--------------------------------------------------------------------------
+        */
+        if ($request->filled('estoque')) {
+            if ($request->estoque == 'disponivel') {
+                $produtos->where('estoque', '>', 0);
+            } elseif ($request->estoque == 'zerado') {
+                $produtos->where('estoque', '=', 0);
+            }
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Ordenação
+        |--------------------------------------------------------------------------
+        */
+        switch ($request->ordenar) {
+            case 'preco_asc':
+                $produtos->orderBy('preco', 'asc');
+                break;
+            case 'preco_desc':
+                $produtos->orderBy('preco', 'desc');
+                break;
+            case 'antigos':
+                $produtos->orderBy('created_at', 'asc');
+                break;
+            default:
+                $produtos->orderBy('created_at', 'desc'); // recentes
+                break;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Paginação (mantém filtros)
+        |--------------------------------------------------------------------------
+        */
+        $produtos = $produtos
+            ->paginate(10)
+            ->appends($request->query());
+
+        /*
+        |--------------------------------------------------------------------------
+        | Dados para o formulário de filtro
+        |--------------------------------------------------------------------------
+        */
+        $categorias = Categoria::orderBy('descricao')->get();
+        $subcategorias = SubCategoria::orderBy('descricao')->get();
+
+        return view('admin.produto.list', compact('produtos', 'categorias', 'subcategorias'));
     }
+
 
     public function produtoVer($id)
     {
@@ -146,7 +246,7 @@ class AdminController extends Controller
 
     public function subcategorias()
     {
-        $subcategorias = SubCategoria::where('id','!=',1)->orderBy('created_at', 'desc')->paginate(10);
+        $subcategorias = SubCategoria::where('id', '!=', 1)->orderBy('created_at', 'desc')->paginate(10);
 
         return view('admin.subcategoria.list', compact('subcategorias'));
     }
@@ -165,7 +265,7 @@ class AdminController extends Controller
             'admin.subcategoria.create',
             [
                 'subcategoria' => $subcategoria,
-                'categorias' => Categoria::where('id','!=',1)->get()
+                'categorias' => Categoria::where('id', '!=', 1)->get()
             ]
         );
 
@@ -187,7 +287,7 @@ class AdminController extends Controller
 
     public function categorias()
     {
-        $categorias = Categoria::where('id','!=',1)->orderBy('created_at', 'desc')->paginate(10);
+        $categorias = Categoria::where('id', '!=', 1)->orderBy('created_at', 'desc')->paginate(10);
 
         return view('admin.categoria.list', compact('categorias'));
     }
@@ -235,7 +335,7 @@ class AdminController extends Controller
 
     }
 
-    
+
     public function cadastrar(Request $request)
     {
 
@@ -288,7 +388,7 @@ class AdminController extends Controller
 
                 DB::commit();
                 return redirect()->back()->with('success', 'Alteração salva!');
-                
+
             } else {
 
                 $admin = Admin::create([

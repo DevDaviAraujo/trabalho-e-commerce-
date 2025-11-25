@@ -5,9 +5,10 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\Produto;
+use App\Models\Categoria;
 use App\Models\SubCategoria;
-use Livewire\Attributes\Computed; // 👈 Adicionado
-use Livewire\Attributes\On;       // 👈 Adicionado
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 
 class SelecionarProdutos extends Component
 {
@@ -15,25 +16,19 @@ class SelecionarProdutos extends Component
 
     public $search = '';
     public $categoria = '';
+    public $subCategoria = '';
+
+    public $subcategorias = [];
     public $produtosSelecionados = [];
 
     protected $paginationTheme = 'bootstrap';
 
-    // 👇 'listeners' foi substituído pelo atributo #[On]
-    // protected $listeners = ['atualizarSelecionados'];
-
-    /**
-     * Recebe a lista de selecionados de um componente pai (se houver).
-     */
-    #[On('atualizarSelecionados')] // 👈 Sintaxe moderna do Livewire 3
+    #[On('atualizarSelecionados')]
     public function atualizarSelecionados($selecionados)
     {
         $this->produtosSelecionados = $selecionados;
     }
 
-    /**
-     * Adiciona ou remove um ID da lista de selecionados.
-     */
     public function atualizarSelecao($id)
     {
         if (in_array($id, $this->produtosSelecionados)) {
@@ -43,54 +38,62 @@ class SelecionarProdutos extends Component
         }
     }
 
-    /**
-     * Reseta a paginação sempre que o filtro de busca mudar.
-     */
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
-    /**
-     * Reseta a paginação sempre que o filtro de categoria mudar.
-     */
     public function updatingCategoria()
+    {
+        $this->resetPage();
+        $this->subCategoria = ''; // Resetar subcategoria ao mudar categoria
+    }
+
+    public function updatingSubCategoria()
     {
         $this->resetPage();
     }
 
-    /**
-     * Otimização: Busca as categorias apenas uma vez e armazena em cache.
-     * 'persist: true' mantém o cache entre as requisições.
-     */
+
+    public function chamaSubCategoria($categoria_id)
+    {
+
+        $this->subcategorias = SubCategoria::where('categoria_id', $categoria_id)->get();
+
+    }
+
     #[Computed(persist: true)]
     public function categorias()
     {
-        return SubCategoria::orderBy('descricao')->get();
+        return Categoria::orderBy('descricao')->get();
     }
 
-    /**
-     * Renderiza o componente.
-     */
     public function render()
     {
         $query = Produto::query();
 
         if ($this->search) {
-            $query->where('nome', 'like', "%{$this->search}%")
-                ->orWhere('codigo', 'like', "%{$this->search}%");
+            $query->where(function ($q) {
+                $q->where('nome', 'like', "%{$this->search}%")
+                    ->orWhere('codigo', 'like', "%{$this->search}%");
+            });
         }
 
-        if ($this->categoria) {
-            // Assumindo que o filtro de 'categoria' se refere a 'sub_categoria_id'
-            $query->where('sub_categoria_id', $this->categoria);
+        if ($this->subCategoria) {
+            $query->where('sub_categoria_id', $this->subCategoria);
+        } elseif ($this->categoria) {
+            // Filtra produtos pela categoria pai via relação SubCategoria
+            $query->whereHas('subCategoria', function ($q) {
+                $q->where('categoria_id', $this->categoria);
+            });
         }
 
         $produtos = $query->paginate(10);
 
         return view('livewire.selecionar-produtos', [
             'produtos' => $produtos,
-            'categorias' => $this->categorias, // 👈 Utiliza a computed property
+            'categorias' => $this->categorias,
+            'subcategorias' => $this->subcategorias,
         ]);
     }
 }

@@ -31,8 +31,7 @@
             {{-- Ajuste para sua rota de deleção de oferta --}}
             <a href="{{ route('oferta_deletar', ['id' => $oferta->id]) }}"
                class="btn btn-danger rounded-circle d-inline-flex align-items-center justify-content-center"
-               style="width: 42px; height: 42px;" title="Excluir"
-               onclick="return confirm('Tem certeza que deseja excluir esta oferta?');">
+               style="width: 42px; height: 42px;" title="Excluir">
                 <i class="bi bi-trash text-white"></i>
             </a>
         </div>
@@ -132,6 +131,7 @@
                                     <th>Nome</th>
                                     <th>Código (SKU)</th>
                                     <th>Preço Original</th>
+                                    <th>Preço com Desconto </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -140,6 +140,7 @@
                                         <td>{{ $produto->nome }}</td>
                                         <td>{{ $produto->codigo ?? 'N/A' }}</td>
                                         <td>R$ {{ number_format($produto->preco, 2, ',', '.') }}</td>
+                                        <td>R$ {{ number_format($produto->preco(), 2, ',', '.') }}</td>
                                     </tr>
                                 @empty
                                     <tr>

@@ -8,20 +8,24 @@
         <div class="card shadow-sm border-0 rounded-4">
 
             <!-- Cabeçalho do Card -->
-            <div class="card-header bg-white py-3 px-4 border-0 rounded-top-4">
-                <div class="d-flex justify-content-between align-items-center">
+            <div class="card-header bg-white py-4 px-4 border-0 rounded-top-4">
+
+                <div class="d-flex flex-column flex-xl-row justify-content-between align-items-xl-center gap-4">
+
                     <!-- Título -->
-                    <h2 class="h5 mb-0 text-dark">
-                        <i class="bi bi-box-seam me-2"></i>
+                    <h2 class="h4 mb-0 text-dark d-flex align-items-center">
+                        <i class="bi bi-box-seam me-2 fs-4 text-primary"></i>
                         Meus Produtos
                     </h2>
 
-                    <!-- Botão de Adicionar Novo -->
-                    <a href="{{ Route('produto_cadastro') }}" class="btn btn-primary btn-lg rounded-pill px-4">
-                        <i class="bi bi-plus-lg me-1"></i>
-                        Adicionar Produto
+                    @livewire('filtragem')
+
+                    <!-- Botão Adicionar -->
+                    <a href="{{ route('produto_cadastro') }}" class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm">
+                        <i class="bi bi-plus-lg me-1"></i> Adicionar
                     </a>
                 </div>
+
             </div>
 
             <!-- Corpo do Card (onde a tabela fica) -->
@@ -39,9 +43,10 @@
                                 <th scope="col" class="px-4 py-3">ID</th>
                                 <th scope="col" class="py-3">Código</th>
                                 <th scope="col" class="py-3">Nome</th>
+                                <th scope="col" class="py-3">Categoria</th>
+                                <th scope="col" class="py-3">Sub-categoria</th>
                                 <th scope="col" class="py-3">Preço</th>
                                 <th scope="col" class="py-3">Estoque</th>
-                                <th scope="col" class="py-3">Data Cadastro</th>
                                 <th scope="col" class="py-3">Última Alteração</th>
                                 <th scope="col" class="text-end px-4 py-3">Ações</th>
                             </tr>
@@ -54,12 +59,13 @@
                                     <td class="px-4 fw-bold">{{ $produto->id }}</td>
                                     <td>{{ $produto->codigo }}</td>
                                     <td>{{ $produto->nome }}</td>
+                                    <td>{{ $produto->categoria() }}</td>
+                                    <td>{{ $produto->subCategoria->descricao }}</td>
                                     <td>R${{ $produto->preco }}</td>
                                     <td>
                                         <span
                                             class="badge bg-danger-subtle text-danger-emphasis rounded-pill">{{ $produto->estoque }}</span>
                                     </td>
-                                     <td>{{ $produto->created_at->format('d/m/Y H:i') }}</td>
                                     <td>
                                         {{ $produto->updated_at->format('d/m/Y H:i') }}
                                     </td>
@@ -67,7 +73,7 @@
                                         <div class="d-flex justify-content-end gap-2">
 
                                             <a href="{{ route('produto_visualizar', ['id' => $produto->id]) }}"
-                                            class="btn btn-info rounded-circle d-inline-flex align-items-center justify-content-center"
+                                                class="btn btn-info rounded-circle d-inline-flex align-items-center justify-content-center"
                                                 style="width: 38px; height: 38px;" title="Editar">
                                                 <i class="bi bi-eye-fill text-white"></i>
                                             </a>

@@ -68,11 +68,8 @@ class OfertaController extends Controller
         } catch (Exception $e) {
             DB::rollBack();
 
-            // Loga o erro completo para análise
-            \Log::error('Erro ao cadastrar oferta: ' . $e->getMessage());
-
             // Mostra uma mensagem amigável para o usuário
-            return redirect()->back()->with('error', 'Ops! Algo deu errado ao salvar. Tente novamente.');
+            return redirect()->back()->with('error', 'Erro ao cadastrar oferta: ' . $e->getMessage());
 
         }
     }

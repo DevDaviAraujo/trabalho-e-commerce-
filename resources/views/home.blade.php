@@ -4,7 +4,7 @@
 
     {{-- CAROUSEL DE OFERTAS --}}
     <div id="carouselOfertas" class="relative w-full" data-carousel="slide">
-        <div class="relative h-56 overflow-hidden rounded-lg md:h-[400px]">
+        <div class="relative h-56 overflow-hidden  md:h-[400px]">
             @foreach ($ofertas as $key => $oferta)
                 @if ($oferta->media)
                     <div class="hidden duration-700 ease-in-out {{ $key == 0 ? 'block' : '' }}" data-carousel-item>
@@ -95,10 +95,10 @@
                                         {{-- Preço (com melhor legibilidade) --}}
                                         <div class="mt-2">
                                             <span class="text-green-600 font-bold text-lg block">
-                                                R$ {{ number_format($produto->preco / 12, 2, ',', '.') }} x12
+                                                R$ {{ number_format($produto->preco() / 12, 2, ',', '.') }} x12
                                             </span>
                                             <span class="text-gray-600 text-sm">
-                                                ou R$ {{ number_format($produto->preco, 2, ',', '.') }} à vista
+                                                ou R$ {{ number_format($produto->preco(), 2, ',', '.') }} à vista
                                             </span>
                                         </div>
 

@@ -16,6 +16,7 @@ class ProdutoController extends Controller
         DB::beginTransaction();
 
         try {
+
             if ($id) {
                 $produto = Produto::findOrFail($id);
                 $produto->update($data);
@@ -23,14 +24,15 @@ class ProdutoController extends Controller
                 $produto = Produto::create($data);
             }
 
-            if ($tamanhos) {
-                foreach ($tamanhos as $tamanho) {
-                    DB::table('tamanhos')->insert([
-                        'produto_id' => $produto->id,
-                        'tamanho' => $tamanho,
-                    ]);
+            // 1️⃣ Remove tamanhos antigos
+            DB::table('tamanhos')->where('produto_id', $produto->id)->delete();
 
-                }
+            // 2️⃣ Recria tamanhos
+            foreach ($tamanhos as $tamanho) {
+                DB::table('tamanhos')->insert([
+                    'produto_id' => $produto->id,
+                    'tamanho' => $tamanho,
+                ]);
             }
 
             DB::commit();
@@ -50,7 +52,6 @@ class ProdutoController extends Controller
             ];
         }
     }
-
 
 
 
@@ -75,6 +76,10 @@ class ProdutoController extends Controller
             foreach ($produto->medias as $media) {
                 $media->deleteDir();
                 $media->delete();
+            }
+
+            foreach ($produto->tamanhos as $tamanho) {
+                $tamanho->delete();
             }
 
             $produto->delete();

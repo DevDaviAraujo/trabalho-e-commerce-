@@ -36,7 +36,7 @@ return new class extends Migration {
 
         Schema::create('sub_categorias', function (Blueprint $table) {
             $table->id();
-            $table->string('descricao')->unique();
+            $table->string('descricao');
             $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
@@ -53,7 +53,7 @@ return new class extends Migration {
             $table->string('codigo')->unique();
             $table->decimal('preco', 10, 2);
             $table->integer('estoque')->default(0);
-            $table->foreignId('sub_categoria_id')->constrained('sub_categorias')->onDelete('cascade');
+            $table->foreignId('sub_categoria_id')->default(1)->constrained('sub_categorias')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -76,7 +76,7 @@ return new class extends Migration {
         Schema::create('ofertas', function (Blueprint $table) {
             $table->id();
             $table->string('descricao');
-            $table->decimal('valor_desconto', 3, 2)->nullable();
+            $table->decimal('valor_desconto')->nullable();
             $table->enum('tipo_desconto', ['porcentagem', 'unitario'])->default('porcentagem')->nullable();
             $table->timestamps();
             $table->softDeletes();

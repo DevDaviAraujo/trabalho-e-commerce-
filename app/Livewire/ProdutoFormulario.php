@@ -27,7 +27,6 @@ class ProdutoFormulario extends Component
     public $sub_categoria_id;
     public $imagens = [];
     public $tamanhos = [];
-
     public $categorias = [];
     public $subcategorias = [];
 
@@ -45,15 +44,12 @@ class ProdutoFormulario extends Component
             $this->preco = $produto->preco;
             $this->estoque = $produto->estoque;
 
-            // Define a Categoria e Subcategoria
-            $this->sub_categoria_id = $produto->sub_categoria_id;
-            // A categoria é buscada através do relacionamento, se existir
             $this->categoria_id = $produto->subCategoria->categoria_id ?? null;
+            $this->chamaSubCategoria($this->categoria_id); // <-- correto
+            $this->sub_categoria_id = $produto->sub_categoria_id;
 
             $this->tamanhos = $produto->tamanhos->pluck('tamanho')->toArray();
 
-            // 2. Carrega as subcategorias iniciais se a categoria_id foi definida
-            $this->loadSubcategorias();
         } else {
             $this->tamanhos = [''];
         }
@@ -61,10 +57,12 @@ class ProdutoFormulario extends Component
 
     public function chamaSubCategoria($categoria_id)
     {
-
         $this->subcategorias = SubCategoria::where('categoria_id', $categoria_id)->get();
 
+
+        $this->sub_categoria_id = null;
     }
+
     public function addTamanho()
     {
         $this->tamanhos[] = '';
@@ -93,7 +91,6 @@ class ProdutoFormulario extends Component
                 : 'required|file|max:20000|mimes:jpeg,png,jpg,gif,webp,avif',
         ];
     }
-
 
     public function save()
     {
@@ -129,6 +126,18 @@ class ProdutoFormulario extends Component
         }
 
         session()->flash('success', 'Produto salvo com sucesso!');
+
+        if (empty($this->produtoId)) {
+            $this->reset([
+                'nome',
+                'descricao',
+                'codigo',
+                'modelo',
+                'preco',
+                'estoque',
+                'sub_categoria_id'
+            ]);
+        }
     }
 
 

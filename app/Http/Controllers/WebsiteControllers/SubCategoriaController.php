@@ -14,50 +14,53 @@ use Illuminate\Support\Facades\DB;
 
 class SubCategoriaController extends Controller
 {
+
     public function cadastrar(Request $request)
     {
+
         $validated = $request->validate(
             [
                 'desc' => [
                     'required',
-                    Rule::unique('sub_categorias', 'descricao')->ignore($request->id),
+                    Rule::unique('sub_categorias', 'descricao')
+                        ->where(function ($query) use ($request) {
+                            return $query->where('categoria_id', $request->categoria_id);
+                        })
+                        ->ignore($request->id)
                 ],
 
-                'categoria_id' => 'required'
+                'categoria_id' => ['required', 'exists:categorias,id'],
             ],
             [
-                'desc.required' => 'A descrição é obrigatória.',
-                'categoria_id.required' => 'A categoria é obrigatória.',
-                'desc.unique' => 'Já existe esse cadastro!',
+                'desc.required' => 'A descrição da subcategoria é obrigatória.',
+                'desc.unique' => 'Já existe uma subcategoria com essa descrição nesta categoria.',
+
+                'categoria_id.required' => 'Selecione uma categoria.',
+                'categoria_id.exists' => 'A categoria selecionada é inválida.',
             ]
         );
 
         try {
-
             if ($request->id) {
-
-                $subcategoria = SubCategoria::where('id', $request->id)->update([
-
+                SubCategoria::where('id', $request->id)->update([
                     'descricao' => ucfirst(trim($validated['desc'])),
                     'categoria_id' => $validated['categoria_id']
-
                 ]);
 
                 return redirect()->back()->with('success', 'Alteração salva!');
-
-            } else {
-
-                $subcategoria = SubCategoria::create([
-                    'descricao' => ucfirst(trim($validated['desc'])),
-                    'categoria_id' => $validated['categoria_id']
-                ]);
             }
-            return redirect()->back()->with('success', $subcategoria->descricao . ' cadastrado com sucesso!');
+
+            $subcategoria = SubCategoria::create([
+                'descricao' => ucfirst(trim($validated['desc'])),
+                'categoria_id' => $validated['categoria_id']
+            ]);
+
+            return redirect()->back()
+                ->with('success', $subcategoria->descricao . ' cadastrado com sucesso!');
 
         } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Algo deu errado: ' . $e->getMessage());
-
+            return redirect()->back()
+                ->with('error', 'Algo deu errado: ' . $e->getMessage());
         }
     }
 
