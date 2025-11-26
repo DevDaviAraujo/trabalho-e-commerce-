@@ -9,8 +9,8 @@
                 @if ($oferta->media)
                     <div class="hidden duration-700 ease-in-out {{ $key == 0 ? 'block' : '' }}" data-carousel-item>
                         <a href="{{ route('oferta', ['descricao' => $oferta->descricao]) }}">
-                            <img src="{{ $oferta->media->getDir()}}"
-                                class="absolute block w-full h-full object-cover object-center" alt="{{ $oferta->descricao }}">
+                            <img src="{{ $oferta->media->getDir()}}" class="absolute block w-full h-full object-cover object-center"
+                                alt="{{ $oferta->descricao }}">
                         </a>
                     </div>
                 @endif
@@ -69,48 +69,49 @@
                         <div
                             class="flex gap-5 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent snap-x snap-mandatory">
                             @foreach ($produtos as $produto)
-                                
+
                                 {{-- CARD DO PRODUTO ATUALIZADO --}}
-                                <div
-                                    class="w-56 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 border border-gray-100 flex flex-col snap-start">
+                                <a href="{{ route('produto', ['id' => $produto->id]) }}">
+                                    <div
+                                        class="w-56 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 border border-gray-100 flex flex-col snap-start">
 
-                                    {{-- Imagem responsiva e proporcional --}}
-                                    <div class="relative aspect-[4/5] w-full overflow-hidden bg-gray-100 rounded-t-lg">
-                                        <img src="{{ $produto->media->getDir()}}"
-                                            alt="{{ $produto->nome }}"
-                                            class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105">
+                                        {{-- Imagem responsiva e proporcional --}}
+                                        <div class="relative aspect-[4/5] w-full overflow-hidden bg-gray-100 rounded-t-lg">
+                                            <img src="{{ $produto->media->getDir()}}" alt="{{ $produto->nome }}"
+                                                class="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-300 hover:scale-105">
+                                        </div>
+
+                                        {{-- Infos do produto (com flex-grow para alinhar) --}}
+                                        <div class="p-4 flex flex-col flex-grow">
+
+                                            {{-- Wrapper para empurrar o preço e botão para baixo --}}
+                                            <div class="flex-grow">
+                                                <h3 class="text-base font-semibold text-gray-900 truncate" title="{{ $produto->nome }}">
+                                                    {{ $produto->nome }}
+                                                </h3>
+                                                <p class="text-sm text-gray-500 truncate mb-3">{{ $produto->modelo ?? '' }}</p>
+                                            </div>
+
+                                            {{-- Preço (com melhor legibilidade) --}}
+                                            <div class="mt-2">
+                                                <span class="text-green-600 font-bold text-lg block">
+                                                    R$ {{ number_format($produto->preco() / 12, 2, ',', '.') }} x12
+                                                </span>
+                                                <span class="text-gray-600 text-sm">
+                                                    ou R$ {{ number_format($produto->preco(), 2, ',', '.') }} à vista
+                                                </span>
+                                            </div>
+
+                                            {{-- Botão de Ação (NOVO) --}}
+                                            <div class="mt-4">
+                                                <div type="button" role="button"
+                                                    class="block w-full text-center bg-blue-600 text-white font-medium py-2 px-3 rounded-lg text-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200">
+                                                    Adicionar ao Carrinho
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    {{-- Infos do produto (com flex-grow para alinhar) --}}
-                                    <div class="p-4 flex flex-col flex-grow">
-                                        
-                                        {{-- Wrapper para empurrar o preço e botão para baixo --}}
-                                        <div class="flex-grow">
-                                            <h3 class="text-base font-semibold text-gray-900 truncate" title="{{ $produto->nome }}">
-                                                {{ $produto->nome }}
-                                            </h3>
-                                            <p class="text-sm text-gray-500 truncate mb-3">{{ $produto->modelo ?? '' }}</p>
-                                        </div>
-
-                                        {{-- Preço (com melhor legibilidade) --}}
-                                        <div class="mt-2">
-                                            <span class="text-green-600 font-bold text-lg block">
-                                                R$ {{ number_format($produto->preco() / 12, 2, ',', '.') }} x12
-                                            </span>
-                                            <span class="text-gray-600 text-sm">
-                                                ou R$ {{ number_format($produto->preco(), 2, ',', '.') }} à vista
-                                            </span>
-                                        </div>
-
-                                        {{-- Botão de Ação (NOVO) --}}
-                                        <div class="mt-4">
-                                            <a href="#"
-                                                class="block w-full text-center bg-blue-600 text-white font-medium py-2 px-3 rounded-lg text-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200">
-                                                Adicionar ao Carrinho
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
+                                </a>
                             @endforeach
                         </div>
                     @else

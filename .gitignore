@@ -22,3 +22,12 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+
+# Ignore everything inside storage
+/storage/*
+
+# But DO NOT ignore the app/public/asset folder
+!/storage/app/
+!/storage/app/public/
+!/storage/app/public/asset/
+!/storage/app/public/asset/**

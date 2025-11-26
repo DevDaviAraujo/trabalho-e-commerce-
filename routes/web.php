@@ -10,18 +10,27 @@ use App\Http\Controllers\WebsiteControllers\OfertaController;
 use App\Http\Controllers\WebsiteControllers\SubCategoriaController;
 use App\Http\Controllers\WebsiteControllers\ProdutoController;
 use App\Http\Controllers\WebsiteControllers\MediaController;
+use App\Http\Controllers\WebsiteControllers\CarrinhoController;
 
 Route::GET('/', [WebsiteController::class, 'home'])->name("home");
 Route::GET('/carrinho', [WebsiteController::class, 'carrinho'])->name("carrinho");
 Route::GET('/fale-conosco', [WebsiteController::class, 'faleConosco'])->name("fale-conosco");
 Route::GET('/cadastro', [WebsiteController::class, 'cadastro'])->name("cadastro");
+Route::GET('/categoria/{categoria}/{subcategoria}', [WebsiteController::class, 'subcategoria'])->name('subcategoria');
+Route::GET('/oferta/{descricao}', [WebsiteController::class, 'oferta'])->name('oferta');
+Route::GET('/sobre-nos', [WebsiteController::class, 'sobre_nos'])->name("sobre-nos");
+Route::GET('/produto/{id}', [WebsiteController::class, 'produto'])->name("produto");
+
 
 // --- ROTAS DE AUTENTICAÇÃO DO ADMIN ---
 Route::GET('/admin/login', [AdminController::class, 'login'])->name('login_admin');
 Route::POST('/admin/login', [AdminController::class, 'logar'])->name('admin.logar'); // Nova rota POST
 Route::POST('/admin/logout', [AdminController::class, 'deslogar'])->name('admin.deslogar'); // Nova rota POST
-Route::GET('/categoria/{categoria}/{subcategoria}', [WebsiteController::class, 'subcategoria'])->name('subcategoria');
-Route::GET('/oferta/{descricao}', [WebsiteController::class, 'oferta'])->name('oferta');
+
+Route::prefix("/carrinho")->group(function () {
+    Route::get('/', [CarrinhoController::class, 'carrinho'])->name('carrinho');
+    Route::post('/adicionar', [CarrinhoController::class, 'adicionar'])->name('adicionar_carrinho');
+});
 
 
 Route::POST('/cadastrar', [FeedBackController::class, 'cadastrar'])->name('cadastrar-feedback');

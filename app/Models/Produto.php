@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\Oferta;
 use App\Models\Tamanho;
+use App\Models\Carrinho;
 use Illuminate\Support\Facades\DB;
 
 
@@ -32,40 +33,43 @@ class Produto extends Model
 
     ];
 
-    public function carrinho_produtos(): HasMany
-    {
-        return $this->hasMany(CarrinhoProdutos::class);
-    }
 
     public function preco()
     {
-        // pega a primeira oferta vinculada (caso exista)
-        $oferta = $this->ofertas()->first();
+        $precoBase = $this->attributes['preco'];
 
-        // se não houver oferta → retorna o preço normal
+        // pega a primeira oferta (ou a mais recente)
+        $oferta = $this->ofertas()->orderBy('created_at', 'desc')->first();
+
         if (!$oferta) {
-            return $this->preco;
+            return $precoBase;
         }
 
         // desconto unitário
         if ($oferta->tipo_desconto === 'unitario') {
-            return max(0, $this->preco - $oferta->valor_desconto);
+            return max(0, $precoBase - $oferta->valor_desconto);
         }
 
         // desconto percentual
         if ($oferta->tipo_desconto === 'porcentagem') {
-            return max(0, $this->preco * (1 - ($oferta->valor_desconto / 100)));
+            return max(0, $precoBase * (1 - $oferta->valor_desconto / 100));
         }
 
-        // fallback
-        return $this->preco;
+        return $precoBase;
     }
+
 
     public function categoria()
     {
 
         return $this->subCategoria->categoria->descricao;
 
+    }
+    public function carrinhos()
+    {
+        return $this->belongsToMany(Carrinho::class, 'carrinho_produtos')
+            ->withPivot(['tamanho_id', 'quantidade', 'preco_unitario'])
+            ->withTimestamps();
     }
 
     public function tamanhos()

@@ -43,7 +43,7 @@
                 <tr>
                     <th style="width: 50px;">Selecionar</th>
                     <th>Código</th>
-                    <th scope="col" class="py-3">Nome</th>
+                    <th scope="col" class="py-3">Nome</th>r
                     <th scope="col" class="py-3">Categoria</th>
                     <th scope="col" class="py-3">Sub-categoria</th>
                     <th>Preço</th>

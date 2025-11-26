@@ -15,7 +15,22 @@ use Illuminate\Support\Str;
 
 class WebsiteController extends Controller
 {
-    
+
+     public function produto($id)
+    {
+        // tenta achar a produto
+        $produto = Produto::find($id);
+
+        if (!$produto) {
+            abort(404);
+        }
+
+        return view('produto', compact('produto'));
+    }
+    public function sobre_nos() {
+
+        return view('sobre-nos');
+    }
     
     public function oferta($descricao)
     {

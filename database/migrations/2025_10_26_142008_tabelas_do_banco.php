@@ -58,7 +58,7 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        
+
         /**
          * TAMANHOS
          */
@@ -98,7 +98,7 @@ return new class extends Migration {
         Schema::create('carrinhos', function (Blueprint $table) {
             $table->id();
             $table->string('token')->unique();
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -110,6 +110,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('carrinho_id')->constrained('carrinhos')->onDelete('cascade');
             $table->foreignId('produto_id')->constrained('produtos')->onDelete('cascade');
+            $table->foreignId('tamanho_id')->constrained('tamanhos')->onDelete('cascade');
             $table->integer('quantidade')->default(1);
             $table->decimal('preco_unitario', 10, 2);
             $table->timestamps();
@@ -120,10 +121,10 @@ return new class extends Migration {
          */
         Schema::create('fale_conosco', function (Blueprint $table) {
             $table->id();
-            $table->string('nome',55);
-            $table->string('email',55);
-            $table->string('assunto',55);
-            $table->string('mensagem',255);
+            $table->string('nome', 55);
+            $table->string('email', 55);
+            $table->string('assunto', 55);
+            $table->string('mensagem', 255);
             $table->boolean('respondido')->default(false);
             $table->timestamps();
         });

@@ -2,7 +2,7 @@
 
 @section('conteudo')
 
-<div class="my-4">
+<div class="my-4 sm:px-3">
 
     {{-- Título da Oferta --}}
     <h2 class="text-2xl font-bold text-gray-900 mb-6">

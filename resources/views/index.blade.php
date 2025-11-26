@@ -11,12 +11,36 @@
     {{-- Tailwind (se ainda não estiver no seu app.css) --}}
     <script src="https://cdn.tailwindcss.com"></script>
     @php
-    use App\Models\Categoria;
+        use App\Models\Categoria;
+        use App\Models\Carrinho;
 
-    $categorias = Categoria::where('id','!=',1)->get();
+        $categorias = Categoria::where('id', '!=', 1)->get();
+
+        $qtd = 0;
+
+        // Se usuário está logado → carrinho pelo user_id
+        if (auth()->check()) {
+            $carrinho = Carrinho::where('user_id', auth()->id())->first();
+        } else {
+            // Visitante → token da session
+            $token = session('carrinho_token');
+
+            if (!$token) {
+                $view->with('carrinhoQtd', 0);
+                return;
+            }
+
+            $carrinho = Carrinho::where('token', $token)->first();
+        }
+
+        if ($carrinho) {
+            $qtd = $carrinho->itens->sum('pivot.quantidade');
+        }
+
+       $carrinhoQtd = $qtd;
 
     @endphp
-
+    @livewireStyles
 
 </head>
 
@@ -106,7 +130,7 @@
                     md:static md:flex md:w-auto md:flex-row md:items-center md:gap-8 md:p-0 md:shadow-none md:bg-transparent">
 
             {{-- Links de navegação --}}
-            <a href="{{ url('nossos_produtos') }}" class="text-black hover:text-gray-600">Nossos Produtos</a>
+            <a href="{{ route('home') }}" lass="text-black hover:text-gray-600">Nossas Ofertas</a>
 
             <button id="dropdownButton" data-dropdown-toggle="dropdownMenu"
                 class="botao flex items-center justify-between w-full text-black hover:text-gray-600 md:w-auto">
@@ -115,42 +139,50 @@
                     <path stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                         d="M1 1l4 4 4-4" />
                 </svg>
-                </button>
+            </button>
 
-                <div id="dropdownMenu" class="z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56">
+            <div id="dropdownMenu" class="z-50 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-56">
 
-                    <ul class="py-2 text-sm text-gray-700">
+                <ul class="py-2 text-sm text-gray-700">
 
-                        @foreach ($categorias as $categoria)
-                            <li class="border-b border-gray-200 pb-1">
+                    @foreach ($categorias as $categoria)
+                        <li class="border-b border-gray-200 pb-1">
 
-                                <span class="block px-4 py-2 font-semibold text-black">
-                                    {{ $categoria->descricao }}
-                                </span>
+                            <span class="block px-4 py-2 font-semibold text-black">
+                                {{ $categoria->descricao }}
+                            </span>
 
-                                {{-- SUBCATEGORIAS --}}
-                                @foreach ($categoria->subs as $sub)
-                                    <a href="{{ route('subcategoria', ['categoria' => $sub->categoria->descricao, 'subcategoria' => $sub->descricao]) }}"
-                                        class="block px-6 py-1 text-gray-600 hover:bg-gray-100">
-                                        {{ $sub->descricao }}
-                                    </a>
-                                @endforeach
+                            {{-- SUBCATEGORIAS --}}
+                            @foreach ($categoria->subs as $sub)
+                                <a href="{{ route('subcategoria', ['categoria' => $sub->categoria->descricao, 'subcategoria' => $sub->descricao]) }}"
+                                    class="block px-6 py-1 text-gray-600 hover:bg-gray-100">
+                                    {{ $sub->descricao }}
+                                </a>
+                            @endforeach
 
-                            </li>
-                        @endforeach
+                        </li>
+                    @endforeach
 
-                    </ul>
-                </div>
+                </ul>
+            </div>
 
 
-                <a href="{{ url('sobre_nos') }}" class="text-black hover:text-gray-600">Sobre Nós</a>
-                <a href="{{ route('fale-conosco') }}" class="text-black hover:text-gray-600">Fale Conosco</a>
+            <a href="{{ route('sobre-nos') }}" class="text-black hover:text-gray-600">Sobre Nós</a>
+            <a href="{{ route('fale-conosco') }}" class="text-black hover:text-gray-600">Fale Conosco</a>
         </div>
 
 
         <div class="nav-direita flex items-center gap-4">
-            <a href="{{ url('carrinho') }}" class="link-carrinho">
+            <a href="{{ route('carrinho') }}" class="relative link-carrinho">
                 <img src="{{ asset('storage/asset/carrinho.png') }}" class="carrinho2 w-8" alt="Carrinho">
+
+                {{-- Badge de quantidade --}}
+                @if($carrinhoQtd > 0)
+                    <span
+                        class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow">
+                        {{ $carrinhoQtd }}
+                    </span>
+                @endif
             </a>
 
             {{--
@@ -208,7 +240,7 @@
         </div>
     </footer>
 
-
+    @livewireScripts
     <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
 
     {{--
