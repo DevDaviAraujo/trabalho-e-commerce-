@@ -130,7 +130,7 @@
 
                                 {{-- SUBCATEGORIAS --}}
                                 @foreach ($categoria->subs as $sub)
-                                    <a href="{{ route('subcategoria', ['descricao' => $sub->descricao]) }}"
+                                    <a href="{{ route('subcategoria', ['categoria' => $sub->categoria->descricao, 'subcategoria' => $sub->descricao]) }}"
                                         class="block px-6 py-1 text-gray-600 hover:bg-gray-100">
                                         {{ $sub->descricao }}
                                     </a>

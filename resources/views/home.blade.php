@@ -8,7 +8,7 @@
             @foreach ($ofertas as $key => $oferta)
                 @if ($oferta->media)
                     <div class="hidden duration-700 ease-in-out {{ $key == 0 ? 'block' : '' }}" data-carousel-item>
-                        <a href="{{ route('ofertas', ['id' => $oferta->id]) }}">
+                        <a href="{{ route('oferta', ['descricao' => $oferta->descricao]) }}">
                             <img src="{{ $oferta->media->getDir()}}"
                                 class="absolute block w-full h-full object-cover object-center" alt="{{ $oferta->descricao }}">
                         </a>
@@ -54,7 +54,7 @@
                                 </span>
                             @endif
                         </h2>
-                        <a href="{{ route('ofertas', ['id' => $oferta->id]) }}"
+                        <a href="{{ route('oferta', ['descricao' => $oferta->descricao]) }}"
                             class="text-blue-700 hover:text-blue-800 font-semibold transition-colors duration-200">
                             Ver todos
                         </a>

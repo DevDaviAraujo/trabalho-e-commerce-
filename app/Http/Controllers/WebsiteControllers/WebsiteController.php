@@ -15,11 +15,28 @@ use Illuminate\Support\Str;
 
 class WebsiteController extends Controller
 {
-    public function subcategoria($descricao)
+    
+    
+    public function oferta($descricao)
     {
-        // tenta achar a subcategoria
-        $sub = SubCategoria::where('descricao', $descricao)->first();
+        // tenta achar a oferta
+        $oferta = Oferta::where('descricao', $descricao)->first();
 
+        if (!$oferta) {
+            abort(404);
+        }
+
+        // pega os produtos relacionados (paginação opcional)
+        $produtos = $oferta->produtos()->paginate(12); // 12 por página, ajustar conforme precisar
+
+        return view('oferta', compact('oferta', 'produtos'));
+    }
+    public function subcategoria($categoria,$subcategoria)
+    {
+        $categoria = Categoria::where('descricao',$categoria)->first();
+        // tenta achar a subcategoria
+        $sub = SubCategoria::where('descricao', $subcategoria)->where('categoria_id',$categoria->id)->first();
+        
         if (!$sub) {
             abort(404);
         }
