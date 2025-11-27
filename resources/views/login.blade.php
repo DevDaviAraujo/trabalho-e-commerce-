@@ -73,7 +73,7 @@
                 
                 <!-- Cabeçalho -->
                 <div class="text-center mb-8">
-                    <img src="{{ asset('storage/asset/logo3.png') }}" class='mx-auto w-24 h-24' alt="EasyWalk Logo">
+                    <img src="{{ asset('storage/asset/logo3.avif') }}" class='mx-auto w-24 h-24' alt="EasyWalk Logo">
                     <h2 class="mt-4 text-2xl font-bold tracking-tight text-gray-900">
                         Login de Usuário
                     </h2>

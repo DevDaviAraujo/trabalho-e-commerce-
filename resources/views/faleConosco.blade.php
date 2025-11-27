@@ -6,7 +6,7 @@
 
 @section('conteudo')
 
-    <main class="mt-sm-40 mt-72">
+    <main class="mt-12">
         <div class="form-container">
             <h2>Fale Conosco</h2>
 

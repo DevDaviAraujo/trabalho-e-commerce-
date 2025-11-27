@@ -19,6 +19,6 @@ Unindo diferentes talentos, cada um trouxe algo único para o projeto: design, p
 Mesmo começando pequenos, o grupo acreditou que todo grande passo começa com um primeiro passo firme. E assim nasceu o projeto — com o objetivo de unir estilo, inovação e autenticidade em cada detalhe do site.
 
 Hoje, seguimos crescendo, aprendendo e aprimorando a plataforma, sempre com o mesmo espírito que nos uniu desde o início: a paixão por tênis e o desejo de criar algo incrível juntos. </p>
-<div class="logo5 mx-auto"> <img src="{{ asset('storage/asset/logo3.png') }}" alt="logo5"> </div> 
+<div class="logo5 mx-auto"> <img src="{{ asset('storage/asset/logo3.avif') }}" alt="logo5"> </div> 
 
 @endsection

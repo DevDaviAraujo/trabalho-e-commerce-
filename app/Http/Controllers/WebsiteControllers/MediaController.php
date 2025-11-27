@@ -21,6 +21,7 @@ class MediaController extends Controller
 
     public function save_file(object $file, string $morph_id, string $morph_type, string $pathDir, bool $updating = false)
     {
+
         $file_path = $file->getRealPath();
         $extension = strtolower($file->getClientOriginalExtension());
         $file_name = Str::random(2) . time() . '.' . $extension;
@@ -62,9 +63,9 @@ class MediaController extends Controller
 
                     $content = $morph_type::where('id', $morph_id)->first();
 
-                    $oldFile = $content->image->deleteDir();
+                    $oldFile = $content->media->deleteDir();
 
-                    $image = $content->image->update([
+                    $image = $content->media->update([
                         'file' => $file_name,
                         'file_type' => $file_type,
                         'width' => $width,

@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>@yield('title', 'Painel') - {{ config('app.name', 'Admin') }}</title>
+    <title>{{ config('app.name') }} - Admin</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('storage/asset/logo2.avif') }}">
 
     @stack('styles')
 
@@ -44,7 +45,7 @@
                             <a class="nav-link {{ Request::routeIs('users*') ? 'active' : '' }}"
                                 href="{{ route('users') }}">
                                 <i class="bi bi-people me-1"></i>
-                                 Usuários
+                                Usuários
                             </a>
                         </li>
 
@@ -83,7 +84,7 @@
                         <li class="nav-item">
                             <a class="nav-link {{ Request::routeIs('feedbacks*') ? 'active' : '' }}"
                                 href="{{ route('feedbacks') }}">
-                               <i class="bi bi-chat-square-quote"></i>
+                                <i class="bi bi-chat-square-quote"></i>
                                 FeedBacks
                             </a>
                         </li>

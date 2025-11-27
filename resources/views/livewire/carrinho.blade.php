@@ -1,10 +1,10 @@
 <div class="container mx-auto p-4 max-w-7xl">
 
     <h1
-        class="text-4xl font-extrabold mb-8 text-center text-gray-800 border-b-4 border-blue-500 pb-3 flex items-center justify-center gap-3">
+        class="text-4xl font-extrabold mb-8 text-center text-gray-800 border-b-4 border-amber-500 pb-3 flex items-center justify-center gap-3">
 
         {{-- Ícone Shopping Bag (Flowbite) --}}
-        <svg class="w-10 h-10 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <svg class="w-10 h-10 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round"
                 d="M5.5 8h13l-.8 11.2a2 2 0 01-2 1.8H8.3a2 2 0 01-2-1.8L5.5 8z" />
             <path stroke-linecap="round" stroke-linejoin="round" d="M16 8a4 4 0 00-8 0" />
@@ -23,8 +23,8 @@
                 Seu carrinho está vazio
             </p>
 
-            <a href="{{ route('produtos') }}"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl text-lg font-bold shadow-md">
+            <a href="{{ route('home') }}"
+                class="bg-amber-600 hover:bg-amber-700 text-white px-8 py-3 rounded-xl text-lg font-bold shadow-md">
                 Ver Produtos
             </a>
         </div>
@@ -90,7 +90,7 @@
 
                             {{-- input --}}
                             <input type="number" min="1"
-                                class="w-16 text-center border rounded-lg py-2 bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                                class="w-16 text-center border rounded-lg py-2 bg-gray-50 focus:ring-amber-500 focus:border-amber-500"
                                 wire:change="atualizarQuantidade({{ $produto->id }}, {{ $produto->pivot->tamanho_id }}, $event.target.value)"
                                 value="{{ $produto->pivot->quantidade }}">
 
@@ -108,7 +108,7 @@
 
                         {{-- Subtotal --}}
                         <div class="text-right">
-                            <p class="text-xl font-bold text-blue-600">
+                            <p class="text-xl font-bold text-amber-600">
                                 R$ {{ number_format($subtotal, 2, ',', '.') }}
                             </p>
                         </div>
@@ -145,7 +145,7 @@
 
                     <p class="flex justify-between text-gray-700 text-xl font-bold">
                         <span>Total:</span>
-                        <span class="text-blue-600">R$ {{ number_format($total, 2, ',', '.') }}</span>
+                        <span class="text-amber-600">R$ {{ number_format($total, 2, ',', '.') }}</span>
                     </p>
 
                     <button
