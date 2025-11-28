@@ -19,7 +19,7 @@ class Admin extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'nome',
         'email',
         'documento',
         'password',

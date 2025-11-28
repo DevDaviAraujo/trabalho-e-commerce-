@@ -75,14 +75,14 @@ class AdminController extends Controller
 
     public function users()
     {
-        $users = User::orderBy('created_at', 'desc')->paginate(10);
+        $users = Admin::where('id','!=',1)->orderBy('created_at', 'desc')->paginate(10);
 
         return view('admin.user.list', compact('users'));
     }
 
     public function userCadastro($id = null)
     {
-        $user = $id ? User::find($id) : null;
+        $user = $id ? Admin::find($id) : null;
 
         return view('admin.user.create', [
             'user' => $user,
@@ -96,7 +96,7 @@ class AdminController extends Controller
         return view(
             'admin.user.delete',
             [
-                'user' => User::where('id', $id)->first(),
+                'user' => Admin::where('id', $id)->first(),
                 'codigo' => Str::Random(5)
             ]
         );
@@ -379,7 +379,7 @@ class AdminController extends Controller
 
                 $admin = Admin::where('id', $request->id)->update([
 
-                    'name' => $validated['name'],
+                    'nome' => $validated['name'],
                     'email' => $validated['email'],
                     'documento' => $validated['documento'],
                     'password' => Hash::make($validated['password']),
@@ -392,7 +392,7 @@ class AdminController extends Controller
             } else {
 
                 $admin = Admin::create([
-                    'name' => $validated['name'],
+                    'nome' => $validated['name'],
                     'email' => $validated['email'],
                     'documento' => $validated['documento'],
                     'password' => $validated['password'],
@@ -444,7 +444,7 @@ class AdminController extends Controller
         }
 
 
-        if (Auth::guard('admin')->attempt(['name' => $credenciais['email'], 'password' => $credenciais['password']])) {
+        if (Auth::guard('admin')->attempt(['nome' => $credenciais['email'], 'password' => $credenciais['password']])) {
             return redirect()->route('admin_home');
         }
 

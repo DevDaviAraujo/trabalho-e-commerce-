@@ -41,7 +41,7 @@ class Media extends Model
             return $file_dir;
         }
 
-        return asset('storage/examples/not_found.avif');
+        return asset('examples/not_found.avif');
 
     }
 

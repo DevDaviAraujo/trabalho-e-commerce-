@@ -12,45 +12,45 @@
     {{-- Tailwind (se ainda não estiver no seu app.css) --}}
     <script src="https://cdn.tailwindcss.com"></script>
     @php
-    // Importa os modelos necessários
-    use App\Models\Categoria;
-    use App\Models\Carrinho;
+        // Importa os modelos necessários
+        use App\Models\Categoria;
+        use App\Models\Carrinho;
 
-    // Busca todas as categorias, exceto a de ID 1 (provavelmente "Outros" ou "Sem categoria")
-    $categorias = Categoria::where('id', '!=', 1)->get();
+        // Busca todas as categorias, exceto a de ID 1 (provavelmente "Outros" ou "Sem categoria")
+        $categorias = Categoria::where('id', '!=', 1)->get();
 
-    // Quantidade inicial de itens no carrinho
-    $qtd = 0;
+        // Quantidade inicial de itens no carrinho
+        $qtd = 0;
 
-    // Verifica se o usuário está logado
-    if (auth()->check()) {
+        // Verifica se o usuário está logado
+        if (auth()->check()) {
 
-    // Se estiver logado, procura o carrinho associado ao user_id
-    $carrinho = Carrinho::where('user_id', auth()->id())->first();
+            // Se estiver logado, procura o carrinho associado ao user_id
+            $carrinho = Carrinho::where('user_id', auth()->id())->first();
 
-    } else {
+        } else {
 
-    // Se NÃO estiver logado, o carrinho pertence ao visitante via token da sessão
-    $token = session('carrinho_token');
+            // Se NÃO estiver logado, o carrinho pertence ao visitante via token da sessão
+            $token = session('carrinho_token');
 
-    // Se não existir token, então o visitante ainda não tem carrinho
-    if (!$token) {
-    $carrinhoQtd = 0; // Define quantidade como zero
-    }
+            // Se não existir token, então o visitante ainda não tem carrinho
+            if (!$token) {
+                $carrinhoQtd = 0; // Define quantidade como zero
+            }
 
-    // Tenta buscar um carrinho pelo token (caso exista)
-    $carrinho = Carrinho::where('token', $token)->first();
-    }
+            // Tenta buscar um carrinho pelo token (caso exista)
+            $carrinho = Carrinho::where('token', $token)->first();
+        }
 
-    // Se um carrinho válido foi encontrado...
-    if ($carrinho) {
+        // Se um carrinho válido foi encontrado...
+        if ($carrinho) {
 
-    // Soma todas as quantidades de itens na relação pivot (produto_carrinho)
-    $qtd = $carrinho->itens->sum('pivot.quantidade');
-    }
+            // Soma todas as quantidades de itens na relação pivot (produto_carrinho)
+            $qtd = $carrinho->itens->sum('pivot.quantidade');
+        }
 
-    // Define o valor final da quantidade de itens que será exibida no badge
-    $carrinhoQtd = $qtd;
+        // Define o valor final da quantidade de itens que será exibida no badge
+        $carrinhoQtd = $qtd;
 
     @endphp
 
@@ -93,7 +93,7 @@
 
                     {{-- Nome do usuário (quando logado) --}}
                     @auth
-                    <span class="font-medium">{{ Auth::user()->nome }}</span>
+                        <span class="font-medium">{{ Auth::user()->nome }}</span>
                     @endauth
                 </button>
 
@@ -103,26 +103,26 @@
                     <ul class="py-2 text-sm text-gray-700" aria-labelledby="user-options">
 
                         @auth
-                        {{-- Usuário autenticado --}}
-                        <li>
-                            <a href="{{ route('perfil', ['id' => Auth::user()->id]) }}"
-                                class="block px-4 py-2 hover:bg-gray-100">Perfil</a>
-                        </li>
-                        <li>
-                            <form action="{{ route('deslogar') }}" method="POST" class="block">
-                                @csrf
-                                <button type="submit"
-                                    class="w-full text-left px-4 py-2 hover:bg-gray-100">Deslogar</button>
-                            </form>
-                        </li>
+                            {{-- Usuário autenticado --}}
+                            <li>
+                                <a href="{{ route('perfil', ['id' => Auth::user()->id]) }}"
+                                    class="block px-4 py-2 hover:bg-gray-100">Perfil</a>
+                            </li>
+                            <li>
+                                <form action="{{ route('deslogar') }}" method="POST" class="block">
+                                    @csrf
+                                    <button type="submit"
+                                        class="w-full text-left px-4 py-2 hover:bg-gray-100">Deslogar</button>
+                                </form>
+                            </li>
                         @else
-                        {{-- Visitante --}}
-                        <li>
-                            <a href="{{ route('login') }}" class="block px-4 py-2 hover:bg-gray-100">Entrar</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('cadastro') }}" class="block px-4 py-2 hover:bg-gray-100">Cadastrar</a>
-                        </li>
+                            {{-- Visitante --}}
+                            <li>
+                                <a href="{{ route('login') }}" class="block px-4 py-2 hover:bg-gray-100">Entrar</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('cadastro') }}" class="block px-4 py-2 hover:bg-gray-100">Cadastrar</a>
+                            </li>
                         @endauth
 
                     </ul>
@@ -160,21 +160,21 @@
                 <ul class="py-2 text-sm text-gray-700">
 
                     @foreach ($categorias as $categoria)
-                    <li class="border-b border-gray-200 pb-1">
+                        <li class="border-b border-gray-200 pb-1">
 
-                        <span class="block px-4 py-2 font-semibold text-black">
-                            {{ $categoria->descricao }}
-                        </span>
+                            <span class="block px-4 py-2 font-semibold text-black">
+                                {{ $categoria->descricao }}
+                            </span>
 
-                        {{-- SUBCATEGORIAS --}}
-                        @foreach ($categoria->subs as $sub)
-                        <a href="{{ route('subcategoria', ['categoria' => $sub->categoria->descricao, 'subcategoria' => $sub->descricao]) }}"
-                            class="block px-6 py-1 text-gray-600 hover:bg-gray-100">
-                            {{ $sub->descricao }}
-                        </a>
-                        @endforeach
+                            {{-- SUBCATEGORIAS --}}
+                            @foreach ($categoria->subs as $sub)
+                                <a href="{{ route('subcategoria', ['categoria' => $sub->categoria->descricao, 'subcategoria' => $sub->descricao]) }}"
+                                    class="block px-6 py-1 text-gray-600 hover:bg-gray-100">
+                                    {{ $sub->descricao }}
+                                </a>
+                            @endforeach
 
-                    </li>
+                        </li>
                     @endforeach
 
                 </ul>
@@ -192,10 +192,10 @@
 
                 {{-- Badge de quantidade --}}
                 @if($carrinhoQtd > 0)
-                <span
-                    class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow">
-                    {{ $carrinhoQtd }}
-                </span>
+                    <span
+                        class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center shadow">
+                        {{ $carrinhoQtd }}
+                    </span>
                 @endif
             </a>
 
@@ -224,6 +224,7 @@
     {{-- A classe 'footer' vem do seu home.css --}}
     <footer class="footer">
         <div class="footer-container">
+
             <!-- Informações principais -->
             <div class="footer-section">
                 <p>© 2025 EasyWalk - Todos os direitos reservados</p>
@@ -251,6 +252,54 @@
                 <p>Rua Exemplo, 123 - Centro</p>
                 <p>São Paulo - SP, 01000-000</p>
             </div>
+
+        </div>
+
+        <!-- Desenvolvedores -->
+        <div class="dev-section">
+            <p>Desenvolvido por:</p>
+            <ul>
+                <li><a href="https://github.com/DevDaviAraujo" class="flex gap-1" target="_blank">
+                        <svg class="w-6 h-6" style='color: #f4b400' aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M12.006 2a9.847 9.847 0 0 0-6.484 2.44 10.32 10.32 0 0 0-3.393 6.17 10.48 10.48 0 0 0 1.317 6.955 10.045 10.045 0 0 0 5.4 4.418c.504.095.683-.223.683-.494 0-.245-.01-1.052-.014-1.908-2.78.62-3.366-1.21-3.366-1.21a2.711 2.711 0 0 0-1.11-1.5c-.907-.637.07-.621.07-.621.317.044.62.163.885.346.266.183.487.426.647.71.135.253.318.476.538.655a2.079 2.079 0 0 0 2.37.196c.045-.52.27-1.006.635-1.37-2.219-.259-4.554-1.138-4.554-5.07a4.022 4.022 0 0 1 1.031-2.75 3.77 3.77 0 0 1 .096-2.713s.839-.275 2.749 1.05a9.26 9.26 0 0 1 5.004 0c1.906-1.325 2.74-1.05 2.74-1.05.37.858.406 1.828.101 2.713a4.017 4.017 0 0 1 1.029 2.75c0 3.939-2.339 4.805-4.564 5.058a2.471 2.471 0 0 1 .679 1.897c0 1.372-.012 2.477-.012 2.814 0 .272.18.592.687.492a10.05 10.05 0 0 0 5.388-4.421 10.473 10.473 0 0 0 1.313-6.948 10.32 10.32 0 0 0-3.39-6.165A9.847 9.847 0 0 0 12.007 2Z"
+                                clip-rule="evenodd" />
+                        </svg>
+
+                        Davi Araújo</a></li>
+                <li><a href="https://github.com/Andre11cabral" class="flex gap-1" target="_blank">
+                        <svg class="w-6 h-6" style='color: #f4b400' aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M12.006 2a9.847 9.847 0 0 0-6.484 2.44 10.32 10.32 0 0 0-3.393 6.17 10.48 10.48 0 0 0 1.317 6.955 10.045 10.045 0 0 0 5.4 4.418c.504.095.683-.223.683-.494 0-.245-.01-1.052-.014-1.908-2.78.62-3.366-1.21-3.366-1.21a2.711 2.711 0 0 0-1.11-1.5c-.907-.637.07-.621.07-.621.317.044.62.163.885.346.266.183.487.426.647.71.135.253.318.476.538.655a2.079 2.079 0 0 0 2.37.196c.045-.52.27-1.006.635-1.37-2.219-.259-4.554-1.138-4.554-5.07a4.022 4.022 0 0 1 1.031-2.75 3.77 3.77 0 0 1 .096-2.713s.839-.275 2.749 1.05a9.26 9.26 0 0 1 5.004 0c1.906-1.325 2.74-1.05 2.74-1.05.37.858.406 1.828.101 2.713a4.017 4.017 0 0 1 1.029 2.75c0 3.939-2.339 4.805-4.564 5.058a2.471 2.471 0 0 1 .679 1.897c0 1.372-.012 2.477-.012 2.814 0 .272.18.592.687.492a10.05 10.05 0 0 0 5.388-4.421 10.473 10.473 0 0 0 1.313-6.948 10.32 10.32 0 0 0-3.39-6.165A9.847 9.847 0 0 0 12.007 2Z"
+                                clip-rule="evenodd" />
+                        </svg>
+
+                        André Cabral</a></li>
+                <li><a href="https://github.com/brenoe98" class="flex gap-1" target="_blank">
+                        <svg class="w-6 h-6" style='color: #f4b400' aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M12.006 2a9.847 9.847 0 0 0-6.484 2.44 10.32 10.32 0 0 0-3.393 6.17 10.48 10.48 0 0 0 1.317 6.955 10.045 10.045 0 0 0 5.4 4.418c.504.095.683-.223.683-.494 0-.245-.01-1.052-.014-1.908-2.78.62-3.366-1.21-3.366-1.21a2.711 2.711 0 0 0-1.11-1.5c-.907-.637.07-.621.07-.621.317.044.62.163.885.346.266.183.487.426.647.71.135.253.318.476.538.655a2.079 2.079 0 0 0 2.37.196c.045-.52.27-1.006.635-1.37-2.219-.259-4.554-1.138-4.554-5.07a4.022 4.022 0 0 1 1.031-2.75 3.77 3.77 0 0 1 .096-2.713s.839-.275 2.749 1.05a9.26 9.26 0 0 1 5.004 0c1.906-1.325 2.74-1.05 2.74-1.05.37.858.406 1.828.101 2.713a4.017 4.017 0 0 1 1.029 2.75c0 3.939-2.339 4.805-4.564 5.058a2.471 2.471 0 0 1 .679 1.897c0 1.372-.012 2.477-.012 2.814 0 .272.18.592.687.492a10.05 10.05 0 0 0 5.388-4.421 10.473 10.473 0 0 0 1.313-6.948 10.32 10.32 0 0 0-3.39-6.165A9.847 9.847 0 0 0 12.007 2Z"
+                                clip-rule="evenodd" />
+                        </svg>
+
+                        Breno Souza</a></li>
+                <li><a href="https://github.com/Heitor-ctrl" class="flex gap-1" target="_blank">
+                        <svg class="w-6 h-6" style='color: #f4b400' aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                            viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
+                                d="M12.006 2a9.847 9.847 0 0 0-6.484 2.44 10.32 10.32 0 0 0-3.393 6.17 10.48 10.48 0 0 0 1.317 6.955 10.045 10.045 0 0 0 5.4 4.418c.504.095.683-.223.683-.494 0-.245-.01-1.052-.014-1.908-2.78.62-3.366-1.21-3.366-1.21a2.711 2.711 0 0 0-1.11-1.5c-.907-.637.07-.621.07-.621.317.044.62.163.885.346.266.183.487.426.647.71.135.253.318.476.538.655a2.079 2.079 0 0 0 2.37.196c.045-.52.27-1.006.635-1.37-2.219-.259-4.554-1.138-4.554-5.07a4.022 4.022 0 0 1 1.031-2.75 3.77 3.77 0 0 1 .096-2.713s.839-.275 2.749 1.05a9.26 9.26 0 0 1 5.004 0c1.906-1.325 2.74-1.05 2.74-1.05.37.858.406 1.828.101 2.713a4.017 4.017 0 0 1 1.029 2.75c0 3.939-2.339 4.805-4.564 5.058a2.471 2.471 0 0 1 .679 1.897c0 1.372-.012 2.477-.012 2.814 0 .272.18.592.687.492a10.05 10.05 0 0 0 5.388-4.421 10.473 10.473 0 0 0 1.313-6.948 10.32 10.32 0 0 0-3.39-6.165A9.847 9.847 0 0 0 12.007 2Z"
+                                clip-rule="evenodd" />
+                        </svg>
+
+                        Heitor Martins</a></li>
+            </ul>
         </div>
     </footer>
 

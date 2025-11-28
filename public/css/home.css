@@ -245,66 +245,102 @@ html, body {
 }
 
 main {
-  flex: 1;
+    flex: 1;
 }
 
+/* Footer */
 .footer {
-  background: gray;
-  color: #000000;
-  padding: 20px 0;
-  font-family: Arial, sans-serif;
-  text-align: center;
-  width: 100%;
-  margin-top: auto;
+    background: #424141;
+    color: #ffffff;
+    padding: 40px 0;
+    font-family: Arial, sans-serif;
+    width: 100%;
+    margin-top: auto;
 }
 
 .footer-container {
-  max-width: 1200px;
-  margin: auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
-  padding: 0 20px;
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+    padding: 0 20px;
 }
 
 .footer-section {
-  flex: 1;
-  min-width: 200px;
+    flex: 1;
+    min-width: 220px;
 }
 
 .footer-section h4 {
-  margin-bottom: 8px;
-  font-size: 1.1em;
-  color: #f4b400;
+    margin-bottom: 10px;
+    font-size: 1.2em;
+    color: #f4b400;
 }
 
 .footer-section p {
-  margin: 4px 0;
+    margin: 6px 0;
 }
 
 .footer-section a {
-  color: #000000;
-  text-decoration: none;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .footer-section a:hover {
-  text-decoration: underline;
-  color: #000000;
+    text-decoration: underline;
 }
 
-/* Responsivo (para celular) */
-@media (max-width: auto) {
-  .footer-container {
-    flex-direction: column;
+/* Desenvolvedores */
+.dev-section {
+    margin-top: 40px;
     text-align: center;
-  }
-
-  .footer-section {
-    margin-bottom: 20px;
-  }
 }
+
+.dev-section p {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.dev-section ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.dev-section li a {
+    color: #f4b400;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.dev-section li a:hover {
+    text-decoration: underline;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-section {
+        margin-bottom: 20px;
+    }
+
+    .dev-section ul {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
 
 .usuario{
   justify-self: start;

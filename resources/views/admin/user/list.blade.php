@@ -53,7 +53,7 @@
                                 {{ $user->id }}
                             </td>
                             <td>
-                                {{ $user->name }}
+                                {{ $user->nome }}
                             </td>
                             <td>
                                 {{ $user->email }}

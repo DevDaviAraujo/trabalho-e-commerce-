@@ -94,6 +94,6 @@ class Produto extends Model
 
     public function subCategoria(): BelongsTo
     {
-        return $this->belongsTo(subCategoria::class);
+        return $this->belongsTo(SubCategoria::class);
     }
 }
